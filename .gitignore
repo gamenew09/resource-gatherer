@@ -12,6 +12,8 @@
 *.exp
 *.ilk
 *.lastbuildstate
+*.vcxproj.filters
+*.vcxproj.vpc_crc
 vc100.pdb
 ipch
 *.sdf
