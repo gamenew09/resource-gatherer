@@ -14,7 +14,7 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories		"$BASE;.\resourcegatherer,$SRCDIR\game\shared\resourcegatherer,hl2mp\ui,.\hl2mp,$SRCDIR\game\shared\hl2mp,.\hl2,.\hl2\elements,$SRCDIR\game\shared\hl2"
-		$PreprocessorDefinitions			"$BASE;RESOURCEGATHERER;HL2MP;HL2_CLIENT_DLL;RESOURCEGATHERER_CLIENT_DLL"
+		$PreprocessorDefinitions			"$BASE;RESOURCEGATHERER;HL2_CLIENT_DLL;RESOURCEGATHERER_CLIENT_DLL"
 	}
 }
 
@@ -108,9 +108,10 @@ $Project "Client (Resource Gatherer)"
 			$File	"hl2\shieldproxy.cpp"
 			$File	"hl2\vgui_rootpanel_hl2.cpp"
 		}
-
+/*
 		$Folder	"HL2MP"
 		{
+
 			$File	"hl2mp\c_hl2mp_player.cpp"
 			$File	"hl2mp\c_hl2mp_player.h"
 			$File	"hl2mp\c_te_hl2mp_shotgun_shot.cpp"
@@ -122,6 +123,7 @@ $Project "Client (Resource Gatherer)"
 			$File	"$SRCDIR\game\shared\hl2mp\hl2mp_player_shared.h"
 			$File	"$SRCDIR\game\shared\hl2mp\hl2mp_weapon_parse.cpp"
 			$File	"$SRCDIR\game\shared\hl2mp\hl2mp_weapon_parse.h"
+
 
 			$Folder	"Weapons"
 			{
@@ -165,11 +167,34 @@ $Project "Client (Resource Gatherer)"
 				$File	"hl2mp\hud_deathnotice.cpp"
 			}
 		}
+*/
 
 		$Folder "Resource Gatherer"
 		{
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_gamerules.cpp"
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_gamerules.h"
+
+			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_weapon_parse.cpp"
+			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_weapon_parse.h"
+
+			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_player_shared.cpp"
+			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_player_shared.h"
+			$File	"resourcegatherer\c_resourcegatherer_player.cpp"
+			$File	"resourcegatherer\c_resourcegatherer_player.h"
+			
+			$File	"resourcegatherer\clientmode_resourcegatherernormal.cpp"
+			$File	"resourcegatherer\clientmode_resourcegatherernormal.h"
+
+			$Folder "UI"
+			{
+				$File	"resourcegatherer\ui\backgroundpanel.cpp"
+				$File	"resourcegatherer\ui\backgroundpanel.h"
+
+				$Folder "HUD"
+				{
+
+				}
+			}
 		}
 	}
 }

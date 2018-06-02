@@ -9,6 +9,7 @@
 #define HL2MP_PLAYER_SHARED_H
 #pragma once
 
+#ifndef RESOURCEGATHERER
 #define HL2MP_PUSHAWAY_THINK_INTERVAL		(1.0f / 20.0f)
 #include "studio.h"
 
@@ -93,5 +94,6 @@ private:
 
 	float				m_flTurnCorrectionTime;
 };
+#endif
 
 #endif //HL2MP_PLAYER_SHARED_h

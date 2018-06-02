@@ -7,7 +7,7 @@
 #include "ammodef.h"
 
 #ifdef CLIENT_DLL
-#include "c_hl2mp_player.h"
+#include "c_resourcegatherer_player.h"
 #else
 #include "eventqueue.h"
 #include "player.h"
@@ -20,7 +20,7 @@
 #include <ctype.h>
 #include "voice_gamemgr.h"
 #include "iscorer.h"
-//#include "hl2mp_player.h"
+#include "resourcegatherer_player.h"
 #include "weapon_hl2mpbasehlmpcombatweapon.h"
 #include "team.h"
 #include "voice_gamemgr.h"

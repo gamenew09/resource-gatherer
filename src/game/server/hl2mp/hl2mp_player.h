@@ -8,6 +8,7 @@
 #ifndef HL2MP_PLAYER_H
 #define HL2MP_PLAYER_H
 #pragma once
+#ifndef RESOURCEGATHERER
 
 class CHL2MP_Player;
 
@@ -165,12 +166,13 @@ private:
 	bool m_bReady;
 };
 
-inline CHL2MP_Player *ToHL2MPPlayer( CBaseEntity *pEntity )
+inline CHL2MP_Player *ToRGPlayer( CBaseEntity *pEntity )
 {
 	if ( !pEntity || !pEntity->IsPlayer() )
 		return NULL;
 
 	return dynamic_cast<CHL2MP_Player*>( pEntity );
 }
+#endif
 
 #endif //HL2MP_PLAYER_H

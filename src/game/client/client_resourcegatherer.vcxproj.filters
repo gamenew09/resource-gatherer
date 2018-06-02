@@ -31,20 +31,17 @@
     <Filter Include="Source Files\HL2 DLL">
       <UniqueIdentifier>{3C43D38A-46AF-2183-A5E5-44383B1D2652}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\HL2MP">
-      <UniqueIdentifier>{2BA678C8-595F-A004-FD96-60E33CA8DE83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\HL2MP\UI">
-      <UniqueIdentifier>{0B2F6887-5DFD-E914-A406-9470E425C8E9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\HL2MP\Weapons">
-      <UniqueIdentifier>{382A0C79-1859-D554-1EB7-DCBE8F115956}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Precompiled Header">
       <UniqueIdentifier>{A7D26A13-21F4-C6B5-5922-8A4FB05AF07D}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Resource Gatherer">
       <UniqueIdentifier>{5CB00E6F-53E1-3BE7-595E-36798826F44B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Gatherer\UI">
+      <UniqueIdentifier>{965E6EA9-6E8A-2FC3-B519-D795F69456AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Gatherer\UI\HUD">
+      <UniqueIdentifier>{8F4DE8E5-1FB2-65AC-5F05-A2F1B6008294}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Temporary Entities">
       <UniqueIdentifier>{9EECF4A3-83FE-A929-1B71-69EABF89B7EA}</UniqueIdentifier>
@@ -1868,53 +1865,23 @@
     <ClInclude Include="hl2\hud_suitpower.h">
       <Filter>Source Files\HL2 DLL</Filter>
     </ClInclude>
-    <ClInclude Include="hl2mp\c_hl2mp_player.h">
-      <Filter>Source Files\HL2MP</Filter>
+    <ClInclude Include="resourcegatherer\c_resourcegatherer_player.h">
+      <Filter>Source Files\Resource Gatherer</Filter>
     </ClInclude>
-    <ClInclude Include="hl2mp\clientmode_hl2mpnormal.h">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\hl2mp_player_shared.h">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\hl2mp_weapon_parse.h">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClInclude>
-    <ClInclude Include="hl2mp\ui\backgroundpanel.h">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="hl2mp\hl2mp_hud_chat.h">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="hl2mp\ui\hl2mpclientscoreboard.h">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="hl2mp\ui\hl2mptextwindow.h">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_ar2.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_hl2mpbase.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_hl2mpbase_machinegun.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_hl2mpbasehlmpcombatweapon.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_physcannon.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_rpg.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\shared\hl2mp\weapon_slam.h">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
+    <ClInclude Include="resourcegatherer\clientmode_resourcegatherernormal.h">
+      <Filter>Source Files\Resource Gatherer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\shared\resourcegatherer\resourcegatherer_gamerules.h">
       <Filter>Source Files\Resource Gatherer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\resourcegatherer_player_shared.h">
+      <Filter>Source Files\Resource Gatherer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\resourcegatherer_weapon_parse.h">
+      <Filter>Source Files\Resource Gatherer</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcegatherer\ui\backgroundpanel.h">
+      <Filter>Source Files\Resource Gatherer\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\public\tools\bonelist.h">
       <Filter>Tool Framework</Filter>
@@ -3175,95 +3142,26 @@
     <ClCompile Include="hl2\vgui_rootpanel_hl2.cpp">
       <Filter>Source Files\HL2 DLL</Filter>
     </ClCompile>
-    <ClCompile Include="hl2mp\c_hl2mp_player.cpp">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\c_te_hl2mp_shotgun_shot.cpp">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\clientmode_hl2mpnormal.cpp">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\hl2mp_player_shared.cpp">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\hl2mp_weapon_parse.cpp">
-      <Filter>Source Files\HL2MP</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\ui\backgroundpanel.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\hl2mp_hud_chat.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\hl2mp_hud_target_id.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\hl2mp_hud_team.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\ui\hl2mpclientscoreboard.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\ui\hl2mptextwindow.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2mp\hud_deathnotice.cpp">
-      <Filter>Source Files\HL2MP\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_357.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_ar2.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_crossbow.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_crowbar.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_frag.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_hl2mpbase.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_hl2mpbase_machinegun.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_hl2mpbasebasebludgeon.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_hl2mpbasehlmpcombatweapon.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_physcannon.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_pistol.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_rpg.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_shotgun.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_slam.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_smg1.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\shared\hl2mp\weapon_stunstick.cpp">
-      <Filter>Source Files\HL2MP\Weapons</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files\Precompiled Header</Filter>
     </ClCompile>
+    <ClCompile Include="resourcegatherer\c_resourcegatherer_player.cpp">
+      <Filter>Source Files\Resource Gatherer</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\clientmode_resourcegatherernormal.cpp">
+      <Filter>Source Files\Resource Gatherer</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\game\shared\resourcegatherer\resourcegatherer_gamerules.cpp">
       <Filter>Source Files\Resource Gatherer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\resourcegatherer_player_shared.cpp">
+      <Filter>Source Files\Resource Gatherer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\resourcegatherer_weapon_parse.cpp">
+      <Filter>Source Files\Resource Gatherer</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\ui\backgroundpanel.cpp">
+      <Filter>Source Files\Resource Gatherer\UI</Filter>
     </ClCompile>
     <ClCompile Include="c_basetempentity.cpp">
       <Filter>Source Files\Temporary Entities</Filter>

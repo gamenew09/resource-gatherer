@@ -21,6 +21,8 @@ ipch
 *.sln
 .vs/
 
+.vscode/
+
 # OSX/Linux build products
 *.mak
 *.mak.vpc_crc

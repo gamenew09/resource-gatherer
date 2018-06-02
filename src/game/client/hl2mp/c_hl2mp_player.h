@@ -9,6 +9,7 @@
 #define HL2MP_PLAYER_H
 #pragma once
 
+#ifndef RESOURCEGATHERER
 class C_HL2MP_Player;
 #include "c_basehlplayer.h"
 #include "hl2mp_player_shared.h"
@@ -169,5 +170,6 @@ private:
 	CNetworkVector( m_vecRagdollVelocity );
 	CNetworkVector( m_vecRagdollOrigin );
 };
+#endif
 
 #endif //HL2MP_PLAYER_H

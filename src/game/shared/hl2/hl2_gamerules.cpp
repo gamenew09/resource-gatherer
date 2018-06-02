@@ -229,7 +229,7 @@ ConVar  alyx_darkness_force( "alyx_darkness_force", "0", FCVAR_CHEAT | FCVAR_REP
 
 	extern bool		g_fGameOver;
 
-#if !(defined( HL2MP ) || defined( PORTAL_MP ))
+#if !(defined( HL2MP ) || defined( PORTAL_MP ) || defined( RESOURCEGATHERER ))
 	class CVoiceGameMgrHelper : public IVoiceGameMgrHelper
 	{
 	public:
@@ -1776,6 +1776,7 @@ bool CHalfLife2::ShouldBurningPropsEmitLight()
 // ------------------------------------------------------------------------------------ //
 
 #ifndef HL2MP
+#ifndef RESOURCEGATHERER
 #ifndef PORTAL
 
 // shared ammo definition
@@ -1876,5 +1877,6 @@ CAmmoDef *GetAmmoDef()
 	return &def;
 }
 
+#endif
 #endif
 #endif

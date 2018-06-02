@@ -5,8 +5,11 @@
 #include "gamevars_shared.h"
 
 #ifndef CLIENT_DLL
-#include "hl2mp_player.h"
+#include "resourcegatherer_player.h"
 #endif
+
+#define VEC_CROUCH_TRACE_MIN	ResourceGathererRules()->GetRGViewVectors()->m_vCrouchTraceMin
+#define VEC_CROUCH_TRACE_MAX	ResourceGathererRules()->GetRGViewVectors()->m_vCrouchTraceMax
 
 #ifdef CLIENT_DLL
 	#define CResourceGathererRules C_ResourceGathererRules

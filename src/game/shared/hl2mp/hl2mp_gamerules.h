@@ -15,6 +15,7 @@
 #define HL2MP_GAMERULES_H
 #pragma once
 
+#ifndef RESOURCEGATHERER
 #include "gamerules.h"
 #include "teamplay_gamerules.h"
 #include "gamevars_shared.h"
@@ -168,5 +169,6 @@ inline CHL2MPRules* HL2MPRules()
 {
 	return static_cast<CHL2MPRules*>(g_pGameRules);
 }
+#endif
 
 #endif //HL2MP_GAMERULES_H

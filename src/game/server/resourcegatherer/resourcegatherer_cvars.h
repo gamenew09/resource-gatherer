@@ -1,3 +1,3 @@
 #pragma once
 
-// extern ConVar rg_convarname;
+extern ConVar rg_prototype_mode;
