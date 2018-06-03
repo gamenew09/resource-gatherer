@@ -104,7 +104,6 @@ void CTeamPlayHud::ApplySchemeSettings( vgui::IScheme *pScheme )
 //-----------------------------------------------------------------------------
 void CTeamPlayHud::PerformLayout()
 {
-
 	BaseClass::PerformLayout();
 
 	int wide, tall;

@@ -27,9 +27,9 @@
 		"tall"	 "480"
 	}
 
-	TeamDisplay
+	ResourceCounter
 	{
-		"fieldName" "TeamDisplay"
+		"fieldName" "ResourceCounter"
 	    "visible" "0"
 	    "enabled" "1"
 		"xpos"	"16"

@@ -85,8 +85,6 @@ public:
 	void NoteWeaponFired( void );
 
 	void ResetAnimation( void );
-	void SetPlayerModel( void );
-	void SetPlayerTeamModel( void );
 	Activity TranslateTeamActivity( Activity ActToTranslate );
 	
 	float GetNextModelChangeTime( void ) { return m_flNextModelChangeTime; }

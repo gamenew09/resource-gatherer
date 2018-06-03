@@ -8,8 +8,6 @@ FileWeaponInfo_t* CreateWeaponInfo()
 	return new CResourceGathererWeaponInfo;
 }
 
-
-
 CResourceGathererWeaponInfo::CResourceGathererWeaponInfo()
 {
 	m_iPlayerDamage = 0;

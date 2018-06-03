@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Resource Gatherer\UI\HUD">
       <UniqueIdentifier>{8F4DE8E5-1FB2-65AC-5F05-A2F1B6008294}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Resource Gatherer\Weapons">
+      <UniqueIdentifier>{98C58943-4549-FA62-9A96-C5FF38D89292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Gatherer\Weapons\Base Classes">
+      <UniqueIdentifier>{59DFD9E7-839C-4B46-7540-8D56FDA6E886}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Temporary Entities">
       <UniqueIdentifier>{9EECF4A3-83FE-A929-1B71-69EABF89B7EA}</UniqueIdentifier>
     </Filter>
@@ -1883,6 +1889,36 @@
     <ClInclude Include="resourcegatherer\ui\backgroundpanel.h">
       <Filter>Source Files\Resource Gatherer\UI</Filter>
     </ClInclude>
+    <ClInclude Include="resourcegatherer\ui\resourcegathererclientscoreboard.h">
+      <Filter>Source Files\Resource Gatherer\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcegatherer\ui\resourcegatherertextwindow.h">
+      <Filter>Source Files\Resource Gatherer\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcegatherer\hud\resourcegatherer_hud_chat.h">
+      <Filter>Source Files\Resource Gatherer\UI\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_ar2.h">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_physcannon.h">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_rpg.h">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_slam.h">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase.h">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase_machinegun.h">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbasecombatweapon.h">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\public\tools\bonelist.h">
       <Filter>Tool Framework</Filter>
     </ClInclude>
@@ -3162,6 +3198,72 @@
     </ClCompile>
     <ClCompile Include="resourcegatherer\ui\backgroundpanel.cpp">
       <Filter>Source Files\Resource Gatherer\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\ui\resourcegathererclientscoreboard.cpp">
+      <Filter>Source Files\Resource Gatherer\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\ui\resourcegatherertextwindow.cpp">
+      <Filter>Source Files\Resource Gatherer\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\hud\hud_deathnotice.cpp">
+      <Filter>Source Files\Resource Gatherer\UI\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\hud\resourcegatherer_hud_chat.cpp">
+      <Filter>Source Files\Resource Gatherer\UI\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\hud\resourcegatherer_hud_resourcecounter.cpp">
+      <Filter>Source Files\Resource Gatherer\UI\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\hud\resourcegatherer_hud_target_id.cpp">
+      <Filter>Source Files\Resource Gatherer\UI\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_357.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_ar2.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_crossbow.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_crowbar.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_frag.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_physcannon.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_pistol.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_rpg.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_shotgun.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_slam.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_smg1.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_stunstick.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase_machinegun.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbasebludgeon.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_resourcegathererbasecombatweapon.cpp">
+      <Filter>Source Files\Resource Gatherer\Weapons\Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="c_basetempentity.cpp">
       <Filter>Source Files\Temporary Entities</Filter>

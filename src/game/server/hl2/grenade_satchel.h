@@ -16,7 +16,11 @@
 
 
 #include "basegrenade_shared.h"
+#if defined(RESOURCEGATHERER)
+#include "resourcegatherer/weapons/weapon_slam.h"
+#else
 #include "hl2mp/weapon_slam.h"
+#endif
 
 class CSoundPatch;
 

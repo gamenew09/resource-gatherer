@@ -4,6 +4,7 @@
 #include "viewport_panel_names.h"
 #include "gameeventdefs.h"
 #include <KeyValues.h>
+#include <convar.h>
 #include "ammodef.h"
 
 #ifdef CLIENT_DLL
@@ -26,6 +27,8 @@
 #include "voice_gamemgr.h"
 #include "resourcegatherer_gameinterface.h"
 #include "resourcegatherer_cvars.h"
+
+#include "rg_resourcepickup.h"
 #endif
 
 REGISTER_GAMERULES_CLASS( CResourceGathererRules );
@@ -109,13 +112,18 @@ CResourceGathererRules::CResourceGathererRules()
 {
 #ifndef CLIENT_DLL
 	m_iBiological = m_iMechanical = m_iEnergy = 0;
+
+	CTeam* pUnassignedTeam = static_cast<CTeam*>(CreateEntityByName("team_manager"));
+	pUnassignedTeam->Init("Unassigned", TEAM_UNASSIGNED);
+
+	g_Teams.AddToTail(pUnassignedTeam);
 #endif
 }
 
 CResourceGathererRules::~CResourceGathererRules( void )
 {
 #ifndef CLIENT_DLL
-	
+	g_Teams.Purge();
 #endif
 }
 
@@ -135,6 +143,20 @@ void CResourceGathererRules::Think( void )
 	CGameRules::Think();
 #endif
 }
+
+#ifdef CLIENT_DLL
+void RG_TellCount(void)
+{
+	if (ResourceGathererRules())
+	{
+		Msg("Biological: %i\n", ResourceGathererRules()->GetBiologicalResourceCount());
+		Msg("Mechanical: %i\n", ResourceGathererRules()->GetMechanicalResourceCount());
+		Msg("Energy: %i\n", ResourceGathererRules()->GetEnergyResourceCount());
+	}
+}
+
+ConCommand rg_tellresources("rg_tellresources", RG_TellCount, "Shows a message.", 0);
+#endif
 
 //=========================================================
 // Deathnotice. 
@@ -235,6 +257,11 @@ void CResourceGathererRules::DeathNotice( CBasePlayer *pVictim, const CTakeDamag
 
 }
 
+bool CResourceGathererRules::IsConnectedUserInfoChangeAllowed( CBasePlayer *pPlayer )
+{ 
+	return true; 
+}
+
 int CResourceGathererRules::PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pTarget )
 {
     return GR_TEAMMATE;
@@ -317,9 +344,17 @@ bool CResourceGathererRules::CanBuyItem(CBasePlayer* pPlayer, EResourceType eRes
 }
 
 #ifndef CLIENT_DLL
-CBaseEntity* CResourceGathererRules::SpawnResourcePickup(EResourceType eResourceType, int iWorth)
+CResourceGathererResourcePickup* CResourceGathererRules::CreateResourcePickup(EResourceType eResourceType, int iWorth)
 {
-    return nullptr;
+	CResourceGathererResourcePickup *pEnt = dynamic_cast<CResourceGathererResourcePickup*>(CreateEntityByName("rg_resourcepickup"));
+	if (pEnt)
+	{
+		pEnt->m_eResourceType = eResourceType;
+		pEnt->m_iWorth = iWorth;
+
+		return pEnt;
+	}
+	return nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -373,6 +408,34 @@ const char *CResourceGathererRules::GetChatFormat( bool bTeamOnly, CBasePlayer *
 bool CResourceGathererRules::TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice)
 {
 	return true; // DEBUG: For now
+}
+
+void CResourceGathererRules::AddResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iAmt)
+{
+	switch (eResourceType)
+	{
+	case ResourceType_Biological:
+		m_iBiological += iAmt;
+		break;
+	case ResourceType_Mechanical:
+		m_iMechanical += iAmt;
+		break;
+	case ResourceType_Energy:
+		m_iEnergy += iAmt;
+		break;
+	default:
+		Assert(false); // We should never have an invalid value for adding to resource count. Assert and make sure it is known.
+		return;
+	}
+
+	IGameEvent *event = gameeventmanager->CreateEvent("resource_added");
+	if (event)
+	{
+		event->SetInt("causer", pCauser->GetUserID());
+		event->SetInt("resource_type", eResourceType);
+		event->SetInt("amount", iAmt);
+		gameeventmanager->FireEvent(event);
+	}
 }
 
 #endif

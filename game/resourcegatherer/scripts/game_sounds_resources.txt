@@ -1,0 +1,24 @@
+"Resource.Pickup.Energy"
+{
+    "channel"   "CHAN_AUTO"
+    "volume"    "VOL_NORM"
+    "pitch"     "PITCH_NORM"
+    "soundlevel"    "SNDLVL_NORM"
+    "wave"      "ambient/energy/electric_loop.wav"
+}
+"Resource.Pickup.Mechanical"
+{
+    "channel"   "CHAN_AUTO"
+    "volume"    "VOL_NORM"
+    "pitch"     "PITCH_NORM"
+    "soundlevel"    "SNDLVL_NORM"
+    "wave"      "npc/ministrider/flechette_flesh_impact1.wav"
+}
+"Resource.Pickup.Biological"
+{
+    "channel"   "CHAN_AUTO"
+    "volume"    "VOL_NORM"
+    "pitch"     "PITCH_NORM"
+    "soundlevel"    "SNDLVL_NORM"
+    "wave"      "weapons/bugbait/bugbait_impact1.wav"
+}

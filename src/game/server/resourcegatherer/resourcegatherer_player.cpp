@@ -205,6 +205,8 @@ void CResourceGatherer_Player::GiveDefaultItems( void )
 	CBasePlayer::GiveAmmo( 6,	"Buckshot");
 	CBasePlayer::GiveAmmo( 6,	"357" );
 
+	GiveNamedItem("weapon_crowbar");
+
 /*
 	if ( GetPlayerModelType() == PLAYER_SOUNDS_METROPOLICE || GetPlayerModelType() == PLAYER_SOUNDS_COMBINESOLDIER )
 	{
@@ -246,6 +248,8 @@ void CResourceGatherer_Player::Spawn(void)
 	ChangeTeam(TEAM_UNASSIGNED);
 
 	BaseClass::Spawn();
+
+	SetModel(g_ppszRandomCitizenModels[0]);
 	
 	if ( !IsObserver() )
 	{
@@ -306,98 +310,6 @@ bool CResourceGatherer_Player::ValidatePlayerModel( const char *pModel )
 	}
 
 	return false;
-}
-
-void CResourceGatherer_Player::SetPlayerTeamModel( void )
-{
-	const char *szModelName = g_ppszRandomCitizenModels[0];
-	/*
-	const char *szModelName = NULL;
-	szModelName = engine->GetClientConVarValue( engine->IndexOfEdict( edict() ), "cl_playermodel" );
-
-	int modelIndex = modelinfo->GetModelIndex( szModelName );
-
-	if ( modelIndex == -1 || ValidatePlayerModel( szModelName ) == false )
-	{
-		szModelName = "models/Combine_Soldier.mdl";
-		m_iModelType = TEAM_COMBINE;
-
-		char szReturnString[512];
-
-		Q_snprintf( szReturnString, sizeof (szReturnString ), "cl_playermodel %s\n", szModelName );
-		engine->ClientCommand ( edict(), szReturnString );
-	}
-
-	if ( GetTeamNumber() == TEAM_COMBINE )
-	{
-		if ( Q_stristr( szModelName, "models/human") )
-		{
-			int nHeads = ARRAYSIZE( g_ppszRandomCombineModels );
-		
-			g_iLastCombineModel = ( g_iLastCombineModel + 1 ) % nHeads;
-			szModelName = g_ppszRandomCombineModels[g_iLastCombineModel];
-		}
-
-		m_iModelType = TEAM_COMBINE;
-	}
-	else if ( GetTeamNumber() == TEAM_REBELS )
-	{
-		if ( !Q_stristr( szModelName, "models/human") )
-		{
-			int nHeads = ARRAYSIZE( g_ppszRandomCitizenModels );
-
-			g_iLastCitizenModel = ( g_iLastCitizenModel + 1 ) % nHeads;
-			szModelName = g_ppszRandomCitizenModels[g_iLastCitizenModel];
-		}
-
-		m_iModelType = TEAM_REBELS;
-	}
-	*/
-
-	SetModel( szModelName );
-	SetupPlayerSoundsByModel( szModelName );
-
-	m_flNextModelChangeTime = gpGlobals->curtime + MODEL_CHANGE_INTERVAL;
-}
-
-void CResourceGatherer_Player::SetPlayerModel( void )
-{
-	const char *szModelName = NULL;
-	const char *pszCurrentModelName = modelinfo->GetModelName( GetModel());
-
-	szModelName = engine->GetClientConVarValue( engine->IndexOfEdict( edict() ), "cl_playermodel" );
-
-	if ( ValidatePlayerModel( szModelName ) == false )
-	{
-		char szReturnString[512];
-
-		if ( ValidatePlayerModel( pszCurrentModelName ) == false )
-		{
-			pszCurrentModelName = "models/Combine_Soldier.mdl";
-		}
-
-		Q_snprintf( szReturnString, sizeof (szReturnString ), "cl_playermodel %s\n", pszCurrentModelName );
-		engine->ClientCommand ( edict(), szReturnString );
-
-		szModelName = pszCurrentModelName;
-	}
-
-	int modelIndex = modelinfo->GetModelIndex( szModelName );
-
-	if ( modelIndex == -1 )
-	{
-		szModelName = "models/Combine_Soldier.mdl";
-
-		char szReturnString[512];
-
-		Q_snprintf( szReturnString, sizeof (szReturnString ), "cl_playermodel %s\n", szModelName );
-		engine->ClientCommand ( edict(), szReturnString );
-	}
-
-	SetModel( szModelName );
-	SetupPlayerSoundsByModel( szModelName );
-
-	m_flNextModelChangeTime = gpGlobals->curtime + MODEL_CHANGE_INTERVAL;
 }
 
 void CResourceGatherer_Player::SetupPlayerSoundsByModel( const char *pModelName )
@@ -816,8 +728,6 @@ void CResourceGatherer_Player::ChangeTeam( int iTeam )
 
 	m_flNextTeamChangeTime = gpGlobals->curtime + TEAM_CHANGE_INTERVAL;
 
-	SetPlayerModel();
-
 	if ( iTeam == TEAM_SPECTATOR )
 	{
 		RemoveAllItems( true );
@@ -973,10 +883,10 @@ bool CResourceGatherer_Player::BecomeRagdollOnClient( const Vector &force )
 // Ragdoll entities.
 // -------------------------------------------------------------------------------- //
 
-class CHL2MPRagdoll : public CBaseAnimatingOverlay
+class CResourceGathererRagdoll : public CBaseAnimatingOverlay
 {
 public:
-	DECLARE_CLASS( CHL2MPRagdoll, CBaseAnimatingOverlay );
+	DECLARE_CLASS( CResourceGathererRagdoll, CBaseAnimatingOverlay );
 	DECLARE_SERVERCLASS();
 
 	// Transmit ragdolls to everyone.
@@ -994,9 +904,9 @@ public:
 	CNetworkVector( m_vecRagdollOrigin );
 };
 
-LINK_ENTITY_TO_CLASS( hl2mp_ragdoll, CHL2MPRagdoll );
+LINK_ENTITY_TO_CLASS( hl2mp_ragdoll, CResourceGathererRagdoll );
 
-IMPLEMENT_SERVERCLASS_ST_NOBASE( CHL2MPRagdoll, DT_HL2MPRagdoll )
+IMPLEMENT_SERVERCLASS_ST_NOBASE( CResourceGathererRagdoll, DT_ResourceGathererRagdoll )
 	SendPropVector( SENDINFO(m_vecRagdollOrigin), -1,  SPROP_COORD ),
 	SendPropEHandle( SENDINFO( m_hPlayer ) ),
 	SendPropModelIndex( SENDINFO( m_nModelIndex ) ),
@@ -1015,12 +925,12 @@ void CResourceGatherer_Player::CreateRagdollEntity( void )
 	}
 
 	// If we already have a ragdoll, don't make another one.
-	CHL2MPRagdoll *pRagdoll = dynamic_cast< CHL2MPRagdoll* >( m_hRagdoll.Get() );
+	CResourceGathererRagdoll *pRagdoll = dynamic_cast< CResourceGathererRagdoll* >( m_hRagdoll.Get() );
 	
 	if ( !pRagdoll )
 	{
 		// create a new one
-		pRagdoll = dynamic_cast< CHL2MPRagdoll* >( CreateEntityByName( "hl2mp_ragdoll" ) );
+		pRagdoll = dynamic_cast< CResourceGathererRagdoll* >( CreateEntityByName( "hl2mp_ragdoll" ) );
 	}
 
 	if ( pRagdoll )

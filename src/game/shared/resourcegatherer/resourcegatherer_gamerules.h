@@ -19,10 +19,29 @@
 enum EResourceType
 {
     ResourceType_None = 0,
-    ResourceType_Biological = 1,
-    ResourceType_Mechanical = 2,
-    ResourceType_Energy = 3,
+    ResourceType_Biological,
+    ResourceType_Mechanical,
+    ResourceType_Energy,
+
+	ResourceType_Count
 };
+
+inline const char* ResourceTypeAsString(EResourceType eResourceType)
+{
+	switch (eResourceType)
+	{
+	case ResourceType_Biological:
+		return "Biological";
+	case ResourceType_Mechanical:
+		return "Mechanical";
+	case ResourceType_Energy:
+		return "Energy";
+	default:
+		return "None";
+	}
+}
+
+class CResourceGathererResourcePickup;
 
 class CResourceGathererRulesProxy : public CGameRulesProxy
 {
@@ -78,6 +97,10 @@ public:
     CResourceGathererRules();
     virtual ~CResourceGathererRules();
 
+	virtual bool IsMultiplayer( void ) { return true; }
+
+	virtual bool IsConnectedUserInfoChangeAllowed( CBasePlayer *pPlayer );
+
     virtual void CreateStandardEntities();
 
     virtual const char* GetGameDescription();
@@ -102,9 +125,11 @@ public:
 #ifndef CLIENT_DLL
     virtual bool TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice);
 
+	virtual void AddResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iAmt);
+
     const char *GetChatFormat( bool bTeamOnly, CBasePlayer *pPlayer );
 
-    virtual CBaseEntity* SpawnResourcePickup(EResourceType eResourceType, int iWorth);
+    virtual CResourceGathererResourcePickup* CreateResourcePickup(EResourceType eResourceType, int iWorth);
 #endif
 
     virtual const ResourceGathererViewVectors* GetRGViewVectors() const;

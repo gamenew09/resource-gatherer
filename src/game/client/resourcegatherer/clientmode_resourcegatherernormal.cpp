@@ -7,7 +7,7 @@
 // $NoKeywords: $
 //=============================================================================//
 #include "cbase.h"
-#include "clientmode_hl2mpnormal.h"
+#include "clientmode_resourcegatherernormal.h"
 #include "vgui_int.h"
 #include "hud.h"
 #include <vgui/IInput.h>
@@ -15,8 +15,8 @@
 #include <vgui/ISurface.h>
 #include <vgui_controls/AnimationController.h>
 #include "iinput.h"
-#include "hl2mpclientscoreboard.h"
-#include "hl2mptextwindow.h"
+#include "resourcegathererclientscoreboard.h"
+#include "resourcegatherertextwindow.h"
 #include "ienginevgui.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -30,15 +30,15 @@ vgui::HScheme g_hVGuiCombineScheme = 0;
 // Instance the singleton and expose the interface to it.
 IClientMode *GetClientModeNormal()
 {
-	static ClientModeHL2MPNormal g_ClientModeNormal;
+	static ClientModeResourceGathererNormal g_ClientModeNormal;
 	return &g_ClientModeNormal;
 }
 
-ClientModeHL2MPNormal* GetClientModeHL2MPNormal()
+ClientModeResourceGathererNormal* GetClientModeResourceGathererNormal()
 {
-	Assert( dynamic_cast< ClientModeHL2MPNormal* >( GetClientModeNormal() ) );
+	Assert( dynamic_cast< ClientModeResourceGathererNormal* >( GetClientModeNormal() ) );
 
-	return static_cast< ClientModeHL2MPNormal* >( GetClientModeNormal() );
+	return static_cast< ClientModeResourceGathererNormal* >( GetClientModeNormal() );
 }
 
 //-----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ protected:
 	virtual IViewPortPanel *CreatePanelByName( const char *szPanelName );
 };
 
-int ClientModeHL2MPNormal::GetDeathMessageStartHeight( void )
+int ClientModeResourceGathererNormal::GetDeathMessageStartHeight( void )
 {
 	return m_pViewport->GetDeathMessageStartHeight();
 }
@@ -73,17 +73,17 @@ IViewPortPanel* CHudViewport::CreatePanelByName( const char *szPanelName )
 
 	if ( Q_strcmp( PANEL_SCOREBOARD, szPanelName) == 0 )
 	{
-		newpanel = new CHL2MPClientScoreBoardDialog( this );
+		newpanel = new CResourceGathererClientScoreBoardDialog( this );
 		return newpanel;
 	}
 	else if ( Q_strcmp(PANEL_INFO, szPanelName) == 0 )
 	{
-		newpanel = new CHL2MPTextWindow( this );
+		newpanel = new CResourceGathererTextWindow( this );
 		return newpanel;
 	}
 	else if ( Q_strcmp(PANEL_SPECGUI, szPanelName) == 0 )
 	{
-		newpanel = new CHL2MPSpectatorGUI( this );	
+		newpanel = new CResourceGathererSpectatorGUI( this );	
 		return newpanel;
 	}
 
@@ -94,7 +94,7 @@ IViewPortPanel* CHudViewport::CreatePanelByName( const char *szPanelName )
 //-----------------------------------------------------------------------------
 // ClientModeHLNormal implementation
 //-----------------------------------------------------------------------------
-ClientModeHL2MPNormal::ClientModeHL2MPNormal()
+ClientModeResourceGathererNormal::ClientModeResourceGathererNormal()
 {
 	m_pViewport = new CHudViewport();
 	m_pViewport->Start( gameuifuncs, gameeventmanager );
@@ -104,7 +104,7 @@ ClientModeHL2MPNormal::ClientModeHL2MPNormal()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-ClientModeHL2MPNormal::~ClientModeHL2MPNormal()
+ClientModeResourceGathererNormal::~ClientModeResourceGathererNormal()
 {
 }
 
@@ -112,7 +112,7 @@ ClientModeHL2MPNormal::~ClientModeHL2MPNormal()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void ClientModeHL2MPNormal::Init()
+void ClientModeResourceGathererNormal::Init()
 {
 	BaseClass::Init();
 

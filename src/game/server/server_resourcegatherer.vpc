@@ -234,6 +234,9 @@ $Project "Server (Resource Gatherer)"
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_gamerules.cpp"
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_gamerules.h"
 
+			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_weapon_parse.cpp"
+			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_weapon_parse.h"
+
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_player_shared.cpp"
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_player_shared.h"
 			$File	"resourcegatherer\resourcegatherer_player.cpp"
@@ -246,6 +249,43 @@ $Project "Server (Resource Gatherer)"
 			$File	"resourcegatherer\resourcegatherer_cvars.cpp"
 
 			$File	"resourcegatherer\resourcegatherer_client.cpp"
+
+			$Folder "Entities"
+			{
+				$File "resourcegatherer\rg_resourcepickup.h"
+				$File "resourcegatherer\rg_resourcepickup.cpp"
+			}
+
+			$Folder "Weapons"
+			{
+				$Folder "Base Classes"
+				{
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase.cpp"
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase.h"
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase_machinegun.cpp"
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbase_machinegun.h"
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbasebludgeon.cpp"
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbasecombatweapon.cpp"
+					$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_resourcegathererbasecombatweapon.h"
+				}
+
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_357.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_ar2.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_ar2.h"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_crossbow.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_crowbar.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_frag.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_physcannon.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_physcannon.h"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_pistol.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_rpg.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_rpg.h"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_shotgun.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_slam.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_slam.h"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_smg1.cpp"
+				$File	"$SRCDIR\game\shared\resourcegatherer\weapons\weapon_stunstick.cpp"
+			}
 		}
 	}
 }

@@ -48,4 +48,11 @@
 		"player"	"byte"		// entindex of the player
 		"achievement"	"short"		// achievement ID
 	}
+
+	"resource_added"
+	{
+		"causer"	"short"
+		"resource_type"	"short"
+		"amount"	"int"
+	}
 }

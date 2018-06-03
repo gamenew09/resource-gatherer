@@ -1,8 +1,8 @@
 "GameInfo"
 {
-	game	"My First HL2MP Mod"
-	title	"HALF+LIFE'"
-	title2	"deathmatch mod"
+	game	"Resource Gatherer"
+	title	"Resource Gatherer"
+	title2	"based on prototype"
 	type multiplayer_only
 	nomodels 0
 	nohimodel 1
@@ -61,6 +61,10 @@
 			game_lv				hl2/hl2_lv.vpk
 			game+mod			hl2mp/hl2mp_english.vpk
 			game+mod			hl2mp/hl2mp_pak.vpk
+			game				|all_source_engine_paths|ep2/ep2_english.vpk
+			game 				|all_source_engine_paths|ep2/ep2_pak.vpk
+			game				|all_source_engine_paths|episodic/ep1_english.vpk
+			game 				|all_source_engine_paths|episodic/ep1_pak.vpk
 			game				|all_source_engine_paths|hl2/hl2_english.vpk
 			game				|all_source_engine_paths|hl2/hl2_pak.vpk
 			game				|all_source_engine_paths|hl2/hl2_textures.vpk
@@ -78,6 +82,7 @@
 
 			// Last, mount in shared HL2 loose files
 			game				|all_source_engine_paths|hl2mp
+			game				|all_source_engine_paths|episodic
 			game				|all_source_engine_paths|hl2
 			platform			|all_source_engine_paths|platform
 		}
