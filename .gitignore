@@ -61,4 +61,6 @@ config.cfg
 
 # Debug folders
 Debug_mod_hl2mp/*
+Release_mod_hl2mp/*
 Debug_resourcegatherer/*
+Release_resourcegatherer/*
