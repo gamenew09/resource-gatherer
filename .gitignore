@@ -23,6 +23,7 @@ ipch
 *.sln
 .vs/
 
+# Visual Studio Code
 .vscode/
 
 # OSX/Linux build products
