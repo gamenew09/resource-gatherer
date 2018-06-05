@@ -15,7 +15,7 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories	"$BASE;.\resourcegatherer,$SRCDIR\game\shared\resourcegatherer,$SRCDIR\game\shared\hl2,.\hl2,.\hl2mp,$SRCDIR\game\shared\hl2mp"
-		$PreprocessorDefinitions		"$BASE;RESOURCEGATHERER;HL2_DLL;RESOURCEGATHERER_DLL"
+		$PreprocessorDefinitions		"$BASE;RESOURCEGATHERER;HL2_DLL;RESOURCEGATHERER_DLL;GLOWS_ENABLE"
 	}
 }
 

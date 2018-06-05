@@ -4,7 +4,7 @@
     "volume"    "VOL_NORM"
     "pitch"     "PITCH_NORM"
     "soundlevel"    "SNDLVL_NORM"
-    "wave"      "ambient/energy/electric_loop.wav"
+    "wave"      "resource/energy_collect.wav"
 }
 "Resource.Pickup.Mechanical"
 {

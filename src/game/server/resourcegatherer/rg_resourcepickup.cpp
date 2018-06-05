@@ -8,6 +8,12 @@
 
 LINK_ENTITY_TO_CLASS(rg_resourcepickup, CResourceGathererResourcePickup);
  
+IMPLEMENT_SERVERCLASS_ST(CResourceGathererResourcePickup, DT_ResourceGathererResourcePickup)
+	SendPropInt(SENDINFO(m_eResourceType)),
+	SendPropInt(SENDINFO(m_iWorth)),
+END_SEND_TABLE()
+
+/*
 // Start of our data description for the class
 BEGIN_DATADESC( CResourceGathererResourcePickup )
  
@@ -16,6 +22,7 @@ BEGIN_DATADESC( CResourceGathererResourcePickup )
 	DEFINE_FIELD( m_iWorth, FIELD_INTEGER ),
  
 END_DATADESC()
+*/
 
 CResourceGathererResourcePickup::CResourceGathererResourcePickup()
 {
@@ -41,19 +48,19 @@ void CResourceGathererResourcePickup::PickupResource(CBasePlayer* pCauser)
 		switch (m_eResourceType)
 		{
 		case ResourceType_Biological:
-			EmitSound(BIOLOGICAL_PICKUP_SOUND);
+			EmitAmbientSound(entindex(), GetAbsOrigin(), BIOLOGICAL_PICKUP_SOUND);
 			break;
 		case ResourceType_Mechanical:
-			EmitSound(MECHANICAL_PICKUP_SOUND);
+			EmitAmbientSound(entindex(), GetAbsOrigin(), MECHANICAL_PICKUP_SOUND);
 			break;
 		case ResourceType_Energy:
-			EmitSound(ENERGY_PICKUP_SOUND);
+			EmitAmbientSound(entindex(), GetAbsOrigin(), ENERGY_PICKUP_SOUND);
 			break;
 		default:
 			Assert(false);
-			EmitSound(BIOLOGICAL_PICKUP_SOUND);
 			break;
 		}
+
 		ResourceGathererRules()->AddResource(pCauser, m_eResourceType, m_iWorth);
 		m_bHasBeenPickedUp = true;
 		UTIL_Remove(this); // Make sure that the resource is removed since it has been picked up.
@@ -85,7 +92,6 @@ void CResourceGathererResourcePickup::Precache()
  
 	BaseClass::Precache();
 }
-
 
 void CResourceGathererResourcePickup::PlayerCheckerThink()
 {
@@ -147,7 +153,7 @@ void CResourceGathererResourcePickup::Spawn()
 	SetSolid(SOLID_VPHYSICS);
 }
 
-CON_COMMAND(rg_droppickup, "Creates an instance of the resource pickup.")
+CON_COMMAND_F(rg_droppickup, "Creates an instance of the resource pickup.", FCVAR_CHEAT)
 {
 	EResourceType type = ResourceType_Biological;
 	int worth = 1;
@@ -172,7 +178,7 @@ CON_COMMAND(rg_droppickup, "Creates an instance of the resource pickup.")
 
 			if (worth <= 0)
 			{
-				Warning("Invalid worth amount, must be at least 1.");
+				Warning("Invalid worth amount, must be at least 1.\n");
 				return;
 			}
 		}
@@ -193,16 +199,13 @@ CON_COMMAND(rg_droppickup, "Creates an instance of the resource pickup.")
 		if (pEnt)
 		{
 			Vector eyeOrigin = pPlayer->EyePosition();
-
-			trace_t traceres;
-			UTIL_TraceLine(origin, eyeOrigin + vecForward * 256, MASK_, nullptr, &traceres);
 			QAngle vecAngles(0, pPlayer->GetAbsAngles().y - 90, 0);
-			pEnt->SetAbsOrigin(traceres.endpos);
+			pEnt->SetAbsOrigin(eyeOrigin + vecForward * 256);
 			pEnt->SetAbsAngles(vecAngles);
 
 			DispatchSpawn(pEnt);
 
-			Msg("Spawned resource \"%s\" with worth of %i.", ResourceTypeAsString(type), worth);
+			Msg("Spawned resource \"%s\" with worth of %i.\n", ResourceTypeAsString(type), worth);
 		}
 	}
 }

@@ -5,19 +5,26 @@
 class CResourceGathererResourcePickup : public CBaseAnimating
 {
     DECLARE_CLASS( CResourceGathererResourcePickup, CBaseAnimating );
-	DECLARE_DATADESC();
+	DECLARE_SERVERCLASS();
+
+	//DECLARE_DATADESC();
 public:
 	CResourceGathererResourcePickup();
  
 	void Spawn();
 	void Precache();
 
+	int UpdateTransmitState()	// always send to all clients
+	{
+		return SetTransmitState(FL_EDICT_ALWAYS);
+	}
+
 	void PlayerCheckerThink();
 
     void PickupResource(CBasePlayer* pCauser);
 	
-    EResourceType m_eResourceType;
-    int m_iWorth;
+    CNetworkVar(EResourceType, m_eResourceType);
+    CNetworkVar(int, m_iWorth);
 private:
 	bool m_bHasBeenPickedUp;
 };

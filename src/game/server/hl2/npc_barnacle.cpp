@@ -32,6 +32,12 @@
 #include "npc_antlion.h"
 #endif
 
+#ifdef RESOURCEGATHERER
+#include "resourcegatherer_gamerules.h"
+#include "rg_resourcepickup.h"
+#include "resourcegatherer_cvars.h"
+#endif
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -390,6 +396,23 @@ int	CNPC_Barnacle::OnTakeDamage_Alive( const CTakeDamageInfo &inputInfo )
 	}
 
 	DropTongue();
+
+#ifdef RESOURCEGATHERER
+	for (int i = 0; i < sk_resource_drop_per_damage_barnacle.GetInt(); i++)
+	{
+		CResourceGathererResourcePickup* pResourcePickup = ResourceGathererRules()->CreateResourcePickup(ResourceType_Biological, 2);
+		pResourcePickup->SetAbsOrigin(GetAbsOrigin());
+
+		DispatchSpawn(pResourcePickup);
+
+		IPhysicsObject* pPhysObj = pResourcePickup->VPhysicsGetObject();
+		Vector rnd;
+		rnd.x = RandomFloat(-50.f, 50.f);
+		rnd.y = RandomFloat(-50.f, 50.f);
+		rnd.z = RandomFloat(-50.f, 50.f);
+		pPhysObj->ApplyForceCenter(rnd * pPhysObj->GetMass());
+	}
+#endif
 
 	return BaseClass::OnTakeDamage_Alive( info );
 }

@@ -33,7 +33,7 @@
 	    "visible" "0"
 	    "enabled" "1"
 		"xpos"	"16"
-		"ypos"	"415"
+		"ypos"	"275"
 	    "wide" "200"
 	    "tall" "60"
 	    "text_xpos" "8"

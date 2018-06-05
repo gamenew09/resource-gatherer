@@ -14,7 +14,7 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories		"$BASE;.\resourcegatherer,.\resourcegatherer\ui,$SRCDIR\game\shared\resourcegatherer,hl2mp\ui,.\hl2mp,$SRCDIR\game\shared\hl2mp,.\hl2,.\hl2\elements,$SRCDIR\game\shared\hl2"
-		$PreprocessorDefinitions			"$BASE;RESOURCEGATHERER;HL2_CLIENT_DLL;RESOURCEGATHERER_CLIENT_DLL"
+		$PreprocessorDefinitions			"$BASE;RESOURCEGATHERER;HL2_CLIENT_DLL;RESOURCEGATHERER_CLIENT_DLL;GLOWS_ENABLE"
 	}
 }
 
@@ -27,8 +27,6 @@ $Project "Client (Resource Gatherer)"
 		$File	"hud_voicestatus.cpp"
 		$File	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
 		$File	"$SRCDIR\game\shared\predicted_viewmodel.h"
-		//$File	"$SRCDIR\game\shared\teamplay_round_timer.cpp"
-		//$File	"$SRCDIR\game\shared\teamplay_round_timer.h"
 
 		$Folder	"HL2 DLL"
 		{
@@ -124,6 +122,12 @@ $Project "Client (Resource Gatherer)"
 			
 			$File	"resourcegatherer\clientmode_resourcegatherernormal.cpp"
 			$File	"resourcegatherer\clientmode_resourcegatherernormal.h"
+
+			$Folder "Entities"
+			{
+				$File "resourcegatherer/c_rg_resourcepickup.cpp"
+				$File "resourcegatherer/c_rg_resourcepickup.h"
+			}
 
 			$Folder "UI"
 			{

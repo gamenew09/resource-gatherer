@@ -188,7 +188,7 @@ void CHudVoiceStatus::ApplySchemeSettings(vgui::IScheme *pScheme)
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
-#ifdef HL2MP
+#if defined(HL2MP) || defined(RESOURCEGATHERER)
 	SetBgColor( Color( 0, 0, 0, 0 ) );
 #endif
 }

@@ -130,6 +130,8 @@ public:
     const char *GetChatFormat( bool bTeamOnly, CBasePlayer *pPlayer );
 
     virtual CResourceGathererResourcePickup* CreateResourcePickup(EResourceType eResourceType, int iWorth);
+
+	virtual void InitDefaultAIRelationships() OVERRIDE;
 #endif
 
     virtual const ResourceGathererViewVectors* GetRGViewVectors() const;
