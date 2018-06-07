@@ -15,6 +15,9 @@
 #define	WEAPONAR2_H
 
 #include "basegrenade_shared.h"
+#ifndef CLIENT_DLL
+	#include "basecombatcharacter.h"
+#endif
 #include "weapon_resourcegathererbase_machinegun.h"
 
 #ifdef CLIENT_DLL
@@ -41,12 +44,23 @@ public:
 
 	void	AddViewKick( void );
 
+#ifndef CLIENT_DLL
+	void	FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
+	void	FireNPCSecondaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
+	void	Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
+	void	Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+#endif
+
 	int		GetMinBurst( void ) { return 2; }
 	int		GetMaxBurst( void ) { return 5; }
 	float	GetFireRate( void ) { return 0.1f; }
 
 	bool	CanHolster( void );
 	bool	Reload( void );
+
+#ifndef CLIENT_DLL
+	int					CapabilitiesGet(void) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+#endif
 
 	Activity	GetPrimaryAttackActivity( void );
 	

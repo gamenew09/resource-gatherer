@@ -132,6 +132,11 @@ public:
     virtual CResourceGathererResourcePickup* CreateResourcePickup(EResourceType eResourceType, int iWorth);
 
 	virtual void InitDefaultAIRelationships() OVERRIDE;
+
+	//virtual void PlayerSpawn(CBasePlayer *pPlayer);
+	//virtual void PlayerThink(CBasePlayer *pPlayer);
+	//virtual bool FPlayerCanRespawn(CBasePlayer *pPlayer);
+	//virtual float FlPlayerSpawnTime(CBasePlayer *pPlayer);
 #endif
 
     virtual const ResourceGathererViewVectors* GetRGViewVectors() const;

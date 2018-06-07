@@ -15,6 +15,7 @@
 	#include "resourcegatherer_player.h"
 	#include "te_effect_dispatch.h"
 	#include "prop_combine_ball.h"
+	#include "npc_combine.h"
 #endif
 
 #include "weapon_ar2.h"
@@ -323,6 +324,156 @@ bool CWeaponAR2::Reload( void )
 
 	return BaseClass::Reload();
 }
+
+#ifndef CLIENT_DLL
+//-----------------------------------------------------------------------------
+// Purpose: 
+// Input  : *pOperator - 
+//-----------------------------------------------------------------------------
+void CWeaponAR2::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles )
+{
+	Vector vecShootOrigin, vecShootDir;
+
+	CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+	ASSERT( npc != NULL );
+
+	if ( bUseWeaponAngles )
+	{
+		QAngle	angShootDir;
+		GetAttachment( LookupAttachment( "muzzle" ), vecShootOrigin, angShootDir );
+		AngleVectors( angShootDir, &vecShootDir );
+	}
+	else 
+	{
+		vecShootOrigin = pOperator->Weapon_ShootPosition();
+		vecShootDir = npc->GetActualShootTrajectory( vecShootOrigin );
+	}
+
+	WeaponSoundRealtime( SINGLE_NPC );
+
+	CSoundEnt::InsertSound( SOUND_COMBAT|SOUND_CONTEXT_GUNFIRE, pOperator->GetAbsOrigin(), SOUNDENT_VOLUME_MACHINEGUN, 0.2, pOperator, SOUNDENT_CHANNEL_WEAPON, pOperator->GetEnemy() );
+
+	pOperator->FireBullets( 1, vecShootOrigin, vecShootDir, VECTOR_CONE_PRECALCULATED, MAX_TRACE_LENGTH, m_iPrimaryAmmoType, 2 );
+
+	// NOTENOTE: This is overriden on the client-side
+	// pOperator->DoMuzzleFlash();
+
+	m_iClip1 = m_iClip1 - 1;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CWeaponAR2::FireNPCSecondaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles )
+{
+	WeaponSound( WPN_DOUBLE );
+
+	if ( !GetOwner() )
+		return;
+		
+	CAI_BaseNPC *pNPC = GetOwner()->MyNPCPointer();
+	if ( !pNPC )
+		return;
+	
+	// Fire!
+	Vector vecSrc;
+	Vector vecAiming;
+
+	if ( bUseWeaponAngles )
+	{
+		QAngle	angShootDir;
+		GetAttachment( LookupAttachment( "muzzle" ), vecSrc, angShootDir );
+		AngleVectors( angShootDir, &vecAiming );
+	}
+	else 
+	{
+		vecSrc = pNPC->Weapon_ShootPosition( );
+		
+		Vector vecTarget;
+
+		CNPC_Combine *pSoldier = dynamic_cast<CNPC_Combine *>( pNPC );
+		if ( pSoldier )
+		{
+			// In the distant misty past, elite soldiers tried to use bank shots.
+			// Therefore, we must ask them specifically what direction they are shooting.
+			vecTarget = pSoldier->GetAltFireTarget();
+		}
+		else
+		{
+			// All other users of the AR2 alt-fire shoot directly at their enemy.
+			if ( !pNPC->GetEnemy() )
+				return;
+				
+			vecTarget = pNPC->GetEnemy()->BodyTarget( vecSrc );
+		}
+
+		vecAiming = vecTarget - vecSrc;
+		VectorNormalize( vecAiming );
+	}
+
+	Vector impactPoint = vecSrc + ( vecAiming * MAX_TRACE_LENGTH );
+
+	float flAmmoRatio = 1.0f;
+	float flDuration = RemapValClamped( flAmmoRatio, 0.0f, 1.0f, 0.5f, sk_weapon_ar2_alt_fire_duration.GetFloat() );
+	float flRadius = RemapValClamped( flAmmoRatio, 0.0f, 1.0f, 4.0f, sk_weapon_ar2_alt_fire_radius.GetFloat() );
+
+	// Fire the bullets
+	Vector vecVelocity = vecAiming * 1000.0f;
+
+	// Fire the combine ball
+	CreateCombineBall(	vecSrc, 
+		vecVelocity, 
+		flRadius, 
+		sk_weapon_ar2_alt_fire_mass.GetFloat(),
+		flDuration,
+		pNPC );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CWeaponAR2::Operator_ForceNPCFire( CBaseCombatCharacter *pOperator, bool bSecondary )
+{
+	if ( bSecondary )
+	{
+		FireNPCSecondaryAttack( pOperator, true );
+	}
+	else
+	{
+		// Ensure we have enough rounds in the clip
+		m_iClip1++;
+
+		FireNPCPrimaryAttack( pOperator, true );
+	}
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+// Input  : *pEvent - 
+//			*pOperator - 
+//-----------------------------------------------------------------------------
+void CWeaponAR2::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	switch( pEvent->event )
+	{ 
+		case EVENT_WEAPON_AR2:
+			{
+				FireNPCPrimaryAttack( pOperator, false );
+			}
+			break;
+
+		case EVENT_WEAPON_AR2_ALTFIRE:
+			{
+				FireNPCSecondaryAttack( pOperator, false );
+			}
+			break;
+
+		default:
+			CBaseCombatWeapon::Operator_HandleAnimEvent( pEvent, pOperator );
+			break;
+	}
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: 

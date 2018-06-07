@@ -14,6 +14,7 @@
 	#include "grenade_ar2.h"
 	#include "resourcegatherer_player.h"
 	#include "basegrenade_shared.h"
+	#include "basecombatcharacter.h"
 #endif
 
 #include "weapon_resourcegathererbase.h"
@@ -51,6 +52,9 @@ public:
 	bool	Reload( void );
 
 	float	GetFireRate( void ) { return 0.075f; }	// 13.3hz
+#ifndef CLIENT_DLL
+	int					CapabilitiesGet(void) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+#endif
 	Activity	GetPrimaryAttackActivity( void );
 
 	virtual const Vector& GetBulletSpread( void )
@@ -62,6 +66,10 @@ public:
 	const WeaponProficiencyInfo_t *GetProficiencyValues();
 
 #ifndef CLIENT_DLL
+	void FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, Vector &vecShootOrigin, Vector &vecShootDir );
+	void Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
+	void Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+
 	DECLARE_ACTTABLE();
 #endif
 
@@ -178,6 +186,98 @@ void CWeaponSMG1::Equip( CBaseCombatCharacter *pOwner )
 
 	BaseClass::Equip( pOwner );
 }
+
+#ifndef CLIENT_DLL
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CWeaponSMG1::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, Vector &vecShootOrigin, Vector &vecShootDir )
+{
+	// FIXME: use the returned number of bullets to account for >10hz firerate
+	WeaponSoundRealtime( SINGLE_NPC );
+
+	CSoundEnt::InsertSound( SOUND_COMBAT|SOUND_CONTEXT_GUNFIRE, pOperator->GetAbsOrigin(), SOUNDENT_VOLUME_MACHINEGUN, 0.2, pOperator, SOUNDENT_CHANNEL_WEAPON, pOperator->GetEnemy() );
+	pOperator->FireBullets( 1, vecShootOrigin, vecShootDir, VECTOR_CONE_PRECALCULATED,
+		MAX_TRACE_LENGTH, m_iPrimaryAmmoType, 2, entindex(), 0 );
+
+	pOperator->DoMuzzleFlash();
+	m_iClip1 = m_iClip1 - 1;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CWeaponSMG1::Operator_ForceNPCFire( CBaseCombatCharacter *pOperator, bool bSecondary )
+{
+	// Ensure we have enough rounds in the clip
+	m_iClip1++;
+
+	Vector vecShootOrigin, vecShootDir;
+	QAngle	angShootDir;
+	GetAttachment( LookupAttachment( "muzzle" ), vecShootOrigin, angShootDir );
+	AngleVectors( angShootDir, &vecShootDir );
+	FireNPCPrimaryAttack( pOperator, vecShootOrigin, vecShootDir );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CWeaponSMG1::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	switch( pEvent->event )
+	{
+	case EVENT_WEAPON_SMG1:
+		{
+			Vector vecShootOrigin, vecShootDir;
+			QAngle angDiscard;
+
+			// Support old style attachment point firing
+			if ((pEvent->options == NULL) || (pEvent->options[0] == '\0') || (!pOperator->GetAttachment(pEvent->options, vecShootOrigin, angDiscard)))
+			{
+				vecShootOrigin = pOperator->Weapon_ShootPosition();
+			}
+
+			CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+			ASSERT( npc != NULL );
+			vecShootDir = npc->GetActualShootTrajectory( vecShootOrigin );
+
+			FireNPCPrimaryAttack( pOperator, vecShootOrigin, vecShootDir );
+		}
+		break;
+
+		/*//FIXME: Re-enable
+		case EVENT_WEAPON_AR2_GRENADE:
+		{
+		CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+
+		Vector vecShootOrigin, vecShootDir;
+		vecShootOrigin = pOperator->Weapon_ShootPosition();
+		vecShootDir = npc->GetShootEnemyDir( vecShootOrigin );
+
+		Vector vecThrow = m_vecTossVelocity;
+
+		CGrenadeAR2 *pGrenade = (CGrenadeAR2*)Create( "grenade_ar2", vecShootOrigin, vec3_angle, npc );
+		pGrenade->SetAbsVelocity( vecThrow );
+		pGrenade->SetLocalAngularVelocity( QAngle( 0, 400, 0 ) );
+		pGrenade->SetMoveType( MOVETYPE_FLYGRAVITY ); 
+		pGrenade->m_hOwner			= npc;
+		pGrenade->m_pMyWeaponAR2	= this;
+		pGrenade->SetDamage(sk_npc_dmg_ar2_grenade.GetFloat());
+
+		// FIXME: arrgg ,this is hard coded into the weapon???
+		m_flNextGrenadeCheck = gpGlobals->curtime + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
+
+		m_iClip2--;
+		}
+		break;
+		*/
+
+	default:
+		BaseClass::Operator_HandleAnimEvent( pEvent, pOperator );
+		break;
+	}
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: 

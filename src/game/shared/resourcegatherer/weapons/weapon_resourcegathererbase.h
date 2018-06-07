@@ -14,6 +14,10 @@
 #include "basecombatweapon_shared.h"
 #include "resourcegatherer_weapon_parse.h"
 
+#ifndef CLIENT_DLL
+	#include "AI_BaseNPC.h"
+#endif
+
 #if defined( CLIENT_DLL )
 	#define CWeaponResourceGathererBase C_WeaponResourceGathererBase
 	void UTIL_ClipPunchAngleOffset( QAngle &in, const QAngle &punch, const QAngle &clip );

@@ -873,7 +873,7 @@ float CBounceBomb::FindNearestNPC()
 	}
 
 	// finally, check the player.
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer(GetAbsOrigin());
 
 	if( pPlayer && !(pPlayer->GetFlags() & FL_NOTARGET) )
 	{

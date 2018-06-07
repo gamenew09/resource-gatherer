@@ -58,19 +58,19 @@
 			// VPK and we can avoid making thousands of file system calls to attempt to open files
 			// in folders where they don't exist.  (Searching a VPK is much faster than making an operating
 			// system call.)
-			game_lv				hl2/hl2_lv.vpk
-			game+mod			hl2mp/hl2mp_english.vpk
-			game+mod			hl2mp/hl2mp_pak.vpk
-			game				|all_source_engine_paths|ep2/ep2_english.vpk
-			game 				|all_source_engine_paths|ep2/ep2_pak.vpk
-			game				|all_source_engine_paths|episodic/ep1_english.vpk
-			game 				|all_source_engine_paths|episodic/ep1_pak.vpk
-			game				|all_source_engine_paths|hl2/hl2_english.vpk
-			game				|all_source_engine_paths|hl2/hl2_pak.vpk
-			game				|all_source_engine_paths|hl2/hl2_textures.vpk
-			game				|all_source_engine_paths|hl2/hl2_sound_vo_english.vpk
-			game				|all_source_engine_paths|hl2/hl2_sound_misc.vpk
-			game				|all_source_engine_paths|hl2/hl2_misc.vpk
+			// Base Half-Life 2 Content: ep2, episodic, hl2
+			game_lv					|all_source_engine_paths|hl2/hl2_lv.vpk
+			game					|all_source_engine_paths|ep2/ep2_english.vpk
+			game					|all_source_engine_paths|ep2/ep2_pak.vpk
+			game					|all_source_engine_paths|episodic/ep1_english.vpk
+			game					|all_source_engine_paths|episodic/ep1_pak.vpk
+			game					|all_source_engine_paths|hl2/hl2_english.vpk
+			game					|all_source_engine_paths|hl2/hl2_pak.vpk
+			game					|all_source_engine_paths|hl2/hl2_textures.vpk
+			game					|all_source_engine_paths|hl2/hl2_sound_vo_english.vpk
+			game					|all_source_engine_paths|hl2/hl2_sound_misc.vpk
+			game					|all_source_engine_paths|hl2/hl2_misc.vpk
+			game					|all_source_engine_paths|hl2mp/hl2mp_pak.vpk
 			platform			|all_source_engine_paths|platform/platform_misc.vpk
 
 			// Add the HL2 directory as a game search path.  This is also where where writes
@@ -82,7 +82,6 @@
 
 			// Last, mount in shared HL2 loose files
 			game				|all_source_engine_paths|hl2mp
-			game				|all_source_engine_paths|ep2
 			game				|all_source_engine_paths|episodic
 			game				|all_source_engine_paths|hl2
 			platform			|all_source_engine_paths|platform

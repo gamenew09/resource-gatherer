@@ -1407,6 +1407,74 @@ void CWeaponRPG::Activate( void )
 	}
 }
 
+#ifndef CLIENT_DLL
+//-----------------------------------------------------------------------------
+// Purpose: 
+// Input  : *pEvent - 
+//			*pOperator - 
+//-----------------------------------------------------------------------------
+void CWeaponRPG::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	switch( pEvent->event )
+	{
+		case EVENT_WEAPON_SMG1:
+		{
+			if ( m_hMissile != NULL )
+				return;
+
+			Vector	muzzlePoint;
+			QAngle	vecAngles;
+
+			muzzlePoint = GetOwner()->Weapon_ShootPosition();
+
+			CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+			ASSERT( npc != NULL );
+
+			Vector vecShootDir = npc->GetActualShootTrajectory( muzzlePoint );
+
+			// look for a better launch location
+			Vector altLaunchPoint;
+			if (GetAttachment( "missile", altLaunchPoint ))
+			{
+				// check to see if it's relativly free
+				trace_t tr;
+				AI_TraceHull( altLaunchPoint, altLaunchPoint + vecShootDir * (10.0f*12.0f), Vector( -24, -24, -24 ), Vector( 24, 24, 24 ), MASK_NPCSOLID, NULL, &tr );
+
+				if( tr.fraction == 1.0)
+				{
+					muzzlePoint = altLaunchPoint;
+				}
+			}
+
+			VectorAngles( vecShootDir, vecAngles );
+
+			m_hMissile = CMissile::Create( muzzlePoint, vecAngles, GetOwner()->edict() );		
+			dynamic_cast<CMissile*>(m_hMissile.Get())->m_hOwner = this;
+
+			// NPCs always get a grace period
+			dynamic_cast<CMissile*>(m_hMissile.Get())->SetGracePeriod( 0.5 );
+
+			pOperator->DoMuzzleFlash();
+
+			WeaponSound( SINGLE_NPC );
+
+			// Make sure our laserdot is off
+			m_bGuiding = false;
+
+			if ( m_hLaserDot )
+			{
+				m_hLaserDot->TurnOff();
+			}
+		}
+		break;
+
+		default:
+			BaseClass::Operator_HandleAnimEvent( pEvent, pOperator );
+			break;
+	}
+}
+#endif
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------

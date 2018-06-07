@@ -12,6 +12,7 @@
 	#include "c_resourcegatherer_player.h"
 #else
 	#include "resourcegatherer_player.h"
+	#include "basecombatcharacter.h"
 #endif
 
 #include "weapon_resourcegathererbasecombatweapon.h"
@@ -47,9 +48,15 @@ public:
 	void	PrimaryAttack( void );
 	void	AddViewKick( void );
 	void	DryFire( void );
+#ifndef CLIENT_DLL
+	void	Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+#endif
 
 	void	UpdatePenaltyTime( void );
 
+#ifndef CLIENT_DLL
+	int					CapabilitiesGet(void) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+#endif
 	Activity	GetPrimaryAttackActivity( void );
 
 	virtual bool Reload( void );
@@ -184,6 +191,40 @@ void CWeaponPistol::Precache( void )
 	BaseClass::Precache();
 }
 
+#ifndef CLIENT_DLL
+//-----------------------------------------------------------------------------
+// Purpose:
+// Input  :
+// Output :
+//-----------------------------------------------------------------------------
+void CWeaponPistol::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	switch( pEvent->event )
+	{
+		case EVENT_WEAPON_PISTOL_FIRE:
+		{
+			Vector vecShootOrigin, vecShootDir;
+			vecShootOrigin = pOperator->Weapon_ShootPosition();
+
+			CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+			ASSERT( npc != NULL );
+
+			vecShootDir = npc->GetActualShootTrajectory( vecShootOrigin );
+
+			CSoundEnt::InsertSound( SOUND_COMBAT|SOUND_CONTEXT_GUNFIRE, pOperator->GetAbsOrigin(), SOUNDENT_VOLUME_PISTOL, 0.2, pOperator, SOUNDENT_CHANNEL_WEAPON, pOperator->GetEnemy() );
+
+			WeaponSound( SINGLE_NPC );
+			pOperator->FireBullets( 1, vecShootOrigin, vecShootDir, VECTOR_CONE_PRECALCULATED, MAX_TRACE_LENGTH, m_iPrimaryAmmoType, 2 );
+			pOperator->DoMuzzleFlash();
+			m_iClip1 = m_iClip1 - 1;
+		}
+		break;
+		default:
+			BaseClass::Operator_HandleAnimEvent( pEvent, pOperator );
+			break;
+	}
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose:

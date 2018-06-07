@@ -52,6 +52,10 @@ public:
 	bool			FVisible( CBaseEntity *pEntity, int traceMask = MASK_BLOCKLOS, CBaseEntity **ppBlocker = NULL );
 	virtual bool	IsCurTaskContinuousMove();
 
+#ifdef RESOURCEGATHERER
+	int				OnTakeDamage_Alive(const CTakeDamageInfo &info);
+#endif
+
 	virtual float	GetJumpGravity() const		{ return 1.8f; }
 
 	virtual Vector  GetCrouchEyeOffset( void );

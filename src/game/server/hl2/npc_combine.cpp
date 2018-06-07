@@ -30,6 +30,12 @@
 #include "SoundEmitterSystem/isoundemittersystembase.h"
 #include "npc_headcrab.h"
 
+#ifdef RESOURCEGATHERER
+#include "resourcegatherer_gamerules.h"
+#include "rg_resourcepickup.h"
+#include "resourcegatherer_cvars.h"
+#endif
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -598,6 +604,27 @@ bool CNPC_Combine::IsCurTaskContinuousMove()
 
 	return BaseClass::IsCurTaskContinuousMove();
 }
+
+#ifdef RESOURCEGATHERER
+int CNPC_Combine::OnTakeDamage_Alive(const CTakeDamageInfo& info)
+{
+	for (int i = 0; i < sk_resource_drop_per_damage_barnacle.GetInt(); i++)
+	{
+		CResourceGathererResourcePickup* pResourcePickup = ResourceGathererRules()->CreateResourcePickup(ResourceType_Biological, 2);
+		pResourcePickup->SetAbsOrigin(GetAbsOrigin());
+
+		DispatchSpawn(pResourcePickup);
+
+		IPhysicsObject* pPhysObj = pResourcePickup->VPhysicsGetObject();
+		Vector rnd;
+		rnd.x = RandomFloat(-50.f, 50.f);
+		rnd.y = RandomFloat(-50.f, 50.f);
+		rnd.z = RandomFloat(-50.f, 50.f);
+		pPhysObj->ApplyForceCenter(rnd * pPhysObj->GetMass());
+	}
+	return BaseClass::OnTakeDamage_Alive(info);
+}
+#endif
 
 
 //-----------------------------------------------------------------------------

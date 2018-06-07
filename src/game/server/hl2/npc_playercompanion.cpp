@@ -1741,7 +1741,7 @@ void CNPC_PlayerCompanion::UpdateReadiness()
 		}
 	}
 
- 	if( ai_debug_readiness.GetBool() && AI_IsSinglePlayer() )
+ 	if( ai_debug_readiness.GetBool() )
 	{
 		// Draw the readiness-o-meter
 		Vector vecSpot;

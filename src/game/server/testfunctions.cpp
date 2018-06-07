@@ -58,7 +58,7 @@ void Test_CreateEntity( const CCommand &args )
 
 void Test_RandomPlayerPosition()
 {
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	CBasePlayer *pPlayer = UTIL_GetListenServerHost();
 	CWorld *pWorld = GetWorldEntity();
 	if ( !pPlayer )
 	{

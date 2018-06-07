@@ -1,6 +1,7 @@
 #include "cbase.h"
 
 #include "resourcegatherer_gamerules.h"
+#include "resourcegatherer_cvars.h"
 #include "rg_resourcepickup.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -97,15 +98,19 @@ void CResourceGathererResourcePickup::PlayerCheckerThink()
 {
 	if (!m_bHasBeenPickedUp)
 	{
+#ifdef USE_MINS_MAX_FOR_RESOURCE_PICKUP
 		Vector prop_mins, prop_maxs;
 		CollisionProp()->WorldSpaceSurroundingBounds(&prop_mins, &prop_maxs);
+#else
+		const Vector& resourcePos = GetAbsOrigin();
+#endif
 
 		for (int i = 1; i <= gpGlobals->maxClients; i++)
 		{
 			CBasePlayer* pPlayer = UTIL_PlayerByIndex(i);
 			if (!pPlayer || !pPlayer->IsPlayer())
 				continue;
-
+#ifdef USE_MINS_MAX_FOR_RESOURCE_PICKUP
 			Vector ply_mins, ply_maxs;
 
 			pPlayer->CollisionProp()->WorldSpaceSurroundingBounds(&ply_mins, &ply_maxs);
@@ -117,9 +122,17 @@ void CResourceGathererResourcePickup::PlayerCheckerThink()
 				PickupResource(pPlayer);
 				break;
 			}
+#else
+			const Vector& absOrigin = pPlayer->GetAbsOrigin();
+			if (resourcePos.DistTo(absOrigin) <= rg_resource_pickup_radius.GetFloat())
+			{
+				PickupResource(pPlayer);
+				break;
+			}
+#endif
 		}
 
-		SetNextThink(gpGlobals->curtime + 0.1f);
+		SetNextThink(gpGlobals->curtime);
 	}
 }
 

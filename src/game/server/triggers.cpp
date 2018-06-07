@@ -3038,7 +3038,8 @@ void CTriggerCamera::Enable( void )
 
 	if ( !m_hPlayer || !m_hPlayer->IsPlayer() )
 	{
-		m_hPlayer = UTIL_GetLocalPlayer();
+		Assert(false);
+		m_hPlayer = UTIL_GetNearestPlayer(GetAbsOrigin());
 	}
 
 	if ( !m_hPlayer )

@@ -33,6 +33,13 @@
 		"attacker"	"short"	 	// user ID who killed
 		"weapon"	"string" 	// weapon name killed used 
 	}
+
+	"player_killed_by_npc"				// a game event, name may be 32 charaters long
+	{
+		"userid"	"short"   	// user ID who died				
+		"attacker_npc_entid"	"short"	 	// user ID who killed
+		"weapon"	"string" 	// weapon name killed used 
+	}
 	
 	"teamplay_round_start"			// round restart
 	{

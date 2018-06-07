@@ -4817,7 +4817,7 @@ void CAI_BaseNPC::RunAI( void )
 
 		vecPoint = EyePosition() + Vector( 0, 0, 12 );
 
-		UTIL_GetLocalPlayer()->GetVectors( NULL, &right, NULL );
+		UTIL_GetNearestPlayer(GetAbsOrigin())->GetVectors( NULL, &right, NULL );
 
 		NDebugOverlay::Line( vecPoint, vecPoint + Vector( 0, 0, 64 ), 255, 0, 0, false , 0.1 );
 		NDebugOverlay::Line( vecPoint, vecPoint + Vector( 0, 0, 32 ) + right * 32, 255, 0, 0, false , 0.1 );
@@ -11916,7 +11916,7 @@ bool CAI_BaseNPC::CineCleanup()
 			{
 				SetLocalOrigin( origin );
 
-				int drop = UTIL_DropToFloor( this, MASK_NPCSOLID, UTIL_GetLocalPlayer() );
+				int drop = UTIL_DropToFloor( this, MASK_NPCSOLID, UTIL_GetNearestPlayer(GetAbsOrigin()) );
 
 				// Origin in solid?  Set to org at the end of the sequence
 				if ( ( drop < 0 ) || sv_test_scripted_sequences.GetBool() )

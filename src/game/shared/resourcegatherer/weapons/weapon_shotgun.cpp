@@ -62,6 +62,10 @@ public:
 	virtual float GetFireRate( void ) { return 0.7; };
 
 #ifndef CLIENT_DLL
+	void FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles );
+	void Operator_ForceNPCFire( CBaseCombatCharacter  *pOperator, bool bSecondary );
+	void Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+
 	DECLARE_ACTTABLE();
 #endif
 
@@ -160,8 +164,67 @@ acttable_t	CWeaponShotgun::m_acttable[] =
 
 IMPLEMENT_ACTTABLE(CWeaponShotgun);
 
-#endif
+//-----------------------------------------------------------------------------
+// Purpose: 
+// Input  : *pOperator - 
+//-----------------------------------------------------------------------------
+void CWeaponShotgun::FireNPCPrimaryAttack( CBaseCombatCharacter *pOperator, bool bUseWeaponAngles )
+{
+	Vector vecShootOrigin, vecShootDir;
+	CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+	ASSERT( npc != NULL );
+	WeaponSound( SINGLE_NPC );
+	pOperator->DoMuzzleFlash();
+	m_iClip1 = m_iClip1 - 1;
 
+	if ( bUseWeaponAngles )
+	{
+		QAngle	angShootDir;
+		GetAttachment( LookupAttachment( "muzzle" ), vecShootOrigin, angShootDir );
+		AngleVectors( angShootDir, &vecShootDir );
+	}
+	else 
+	{
+		vecShootOrigin = pOperator->Weapon_ShootPosition();
+		vecShootDir = npc->GetActualShootTrajectory( vecShootOrigin );
+	}
+
+	pOperator->FireBullets( 8, vecShootOrigin, vecShootDir, GetBulletSpread(), MAX_TRACE_LENGTH, m_iPrimaryAmmoType, 0 );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CWeaponShotgun::Operator_ForceNPCFire( CBaseCombatCharacter *pOperator, bool bSecondary )
+{
+	// Ensure we have enough rounds in the clip
+	m_iClip1++;
+
+	FireNPCPrimaryAttack( pOperator, true );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:
+// Input  :
+// Output :
+//-----------------------------------------------------------------------------
+void CWeaponShotgun::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	switch( pEvent->event )
+	{
+		case EVENT_WEAPON_SHOTGUN_FIRE:
+		{
+			FireNPCPrimaryAttack( pOperator, false );
+		}
+		break;
+
+		default:
+			CBaseCombatWeapon::Operator_HandleAnimEvent( pEvent, pOperator );
+			break;
+	}
+}
+
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: Override so only reload one shell at a time

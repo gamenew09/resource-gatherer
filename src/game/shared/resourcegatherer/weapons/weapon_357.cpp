@@ -13,6 +13,7 @@
 	#include "c_resourcegatherer_player.h"
 #else
 	#include "resourcegatherer_player.h"
+	#include "te_effect_dispatch.h"
 #endif
 
 #include "weapon_resourcegathererbasecombatweapon.h"
@@ -33,6 +34,10 @@ public:
 	CWeapon357( void );
 
 	void	PrimaryAttack( void );
+#ifndef CLIENT_DLL
+	void	Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
+#endif
+
 	DECLARE_NETWORKCLASS(); 
 	DECLARE_PREDICTABLE();
 
@@ -84,6 +89,36 @@ CWeapon357::CWeapon357( void )
 	m_bReloadsSingly	= false;
 	m_bFiresUnderwater	= false;
 }
+
+#ifndef CLIENT_DLL
+//-----------------------------------------------------------------------------
+// Purpose:
+//-----------------------------------------------------------------------------
+void CWeapon357::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
+
+	switch( pEvent->event )
+	{
+		case EVENT_WEAPON_RELOAD:
+			{
+				CEffectData data;
+
+				// Emit six spent shells
+				for ( int i = 0; i < 6; i++ )
+				{
+					data.m_vOrigin = pOwner->WorldSpaceCenter() + RandomVector( -4, 4 );
+					data.m_vAngles = QAngle( 90, random->RandomInt( 0, 360 ), 0 );
+					data.m_nEntIndex = entindex();
+
+					DispatchEffect( "ShellEject", data );
+				}
+
+				break;
+			}
+	}
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose:

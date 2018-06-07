@@ -26,6 +26,7 @@ static ConVar hud_deathnotice_time( "hud_deathnotice_time", "6", 0 );
 // Player entries in a death notice
 struct DeathNoticePlayer
 {
+	bool		isNPC;
 	char		szName[MAX_PLAYER_NAME_LENGTH];
 	int			iEntIndex;
 };
@@ -112,6 +113,7 @@ void CHudDeathNotice::ApplySchemeSettings( IScheme *scheme )
 void CHudDeathNotice::Init( void )
 {
 	ListenForGameEvent( "player_death" );	
+	ListenForGameEvent( "player_killed_by_npc" );
 }
 
 //-----------------------------------------------------------------------------
@@ -169,8 +171,15 @@ void CHudDeathNotice::Paint()
 
 		if( g_PR )
 		{
-			iKillerTeam = g_PR->GetTeam( m_DeathNotices[i].Killer.iEntIndex );
-			iVictimTeam = g_PR->GetTeam( m_DeathNotices[i].Victim.iEntIndex );
+			if (!m_DeathNotices[i].Killer.isNPC)
+			{
+				iKillerTeam = g_PR->GetTeam(m_DeathNotices[i].Killer.iEntIndex);
+			}
+
+			if (!m_DeathNotices[i].Victim.isNPC)
+			{
+				iVictimTeam = g_PR->GetTeam(m_DeathNotices[i].Victim.iEntIndex);
+			}
 		}
 
 		g_pVGuiLocalize->ConvertANSIToUnicode( m_DeathNotices[i].Victim.szName, victim, sizeof( victim ) );
@@ -268,9 +277,18 @@ void CHudDeathNotice::FireGameEvent( IGameEvent * event )
 	if ( hud_deathnotice_time.GetFloat() == 0 )
 		return;
 
-	// the event should be "player_death"
-	int killer = engine->GetPlayerForUserID( event->GetInt("attacker") );
-	int victim = engine->GetPlayerForUserID( event->GetInt("userid") );
+	int killer = 0, victim = 0;
+
+	if (!Q_stricmp(event->GetName(), "player_death"))
+	{
+		killer = engine->GetPlayerForUserID(event->GetInt("attacker"));
+		victim = engine->GetPlayerForUserID(event->GetInt("userid"));
+	}
+	else if (!Q_stricmp(event->GetName(), "player_killed_by_npc"))
+	{
+		killer = event->GetInt("attacker_npc_entid");
+		victim = engine->GetPlayerForUserID(event->GetInt("userid"));
+	}
 	const char *killedwith = event->GetString( "weapon" );
 
 	char fullkilledwith[128];
@@ -291,8 +309,16 @@ void CHudDeathNotice::FireGameEvent( IGameEvent * event )
 		m_DeathNotices.Remove(0);
 	}
 
+	const char *killer_name = nullptr;
 	// Get the names of the players
-	const char *killer_name = g_PR->GetPlayerName( killer );
+	if (!Q_stricmp(event->GetName(), "player_death"))
+	{
+		killer_name = g_PR->GetPlayerName(killer);
+	}
+	else
+	{
+		killer_name = ClientEntityList().GetBaseEntity(killer)->GetClassname();
+	}
 	const char *victim_name = g_PR->GetPlayerName( victim );
 
 	if ( !killer_name )
@@ -302,6 +328,7 @@ void CHudDeathNotice::FireGameEvent( IGameEvent * event )
 
 	// Make a new death notice
 	DeathNoticeItem deathMsg;
+	deathMsg.Killer.isNPC = (!Q_stricmp(event->GetName(), "player_killed_by_npc")); // If the event name is "player_killed_by_npc" it is a npc.
 	deathMsg.Killer.iEntIndex = killer;
 	deathMsg.Victim.iEntIndex = victim;
 	Q_strncpy( deathMsg.Killer.szName, killer_name, MAX_PLAYER_NAME_LENGTH );

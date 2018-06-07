@@ -50,6 +50,9 @@ public:
 	void				Spawn( void );
 	void				Precache( void );
 
+#ifndef CLIENT_DLL
+	int					CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+#endif
 	void				PrimaryAttack( void );
 	void				SecondaryAttack( void );
 	void				WeaponIdle( void );
