@@ -3286,6 +3286,9 @@
     <ClCompile Include="..\..\game\shared\resourcegatherer\resourcegatherer_weapon_parse.cpp">
       <Filter>Source Files\Resource Gatherer</Filter>
     </ClCompile>
+    <ClCompile Include="resourcegatherer\rg_resource_taker.cpp">
+      <Filter>Source Files\Resource Gatherer\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="resourcegatherer\rg_resourcepickup.cpp">
       <Filter>Source Files\Resource Gatherer\Entities</Filter>
     </ClCompile>

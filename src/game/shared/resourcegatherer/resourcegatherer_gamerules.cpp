@@ -466,7 +466,42 @@ const char *CResourceGathererRules::GetChatFormat( bool bTeamOnly, CBasePlayer *
 
 bool CResourceGathererRules::TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice)
 {
-	return true; // DEBUG: For now
+	switch (eResourceType)
+	{
+	case ResourceType_Biological:
+		if (m_iBiological < iPrice)
+		{
+			return false;
+		}
+
+		m_iBiological -= iPrice;
+
+		return true;
+		break;
+	case ResourceType_Mechanical:
+		if (m_iMechanical < iPrice)
+		{
+			return false;
+		}
+
+		m_iMechanical -= iPrice;
+
+		return true;
+		break;
+	case ResourceType_Energy:
+		if (m_iEnergy < iPrice)
+		{
+			return false;
+		}
+
+		m_iEnergy -= iPrice;
+
+		return true;
+		break;
+	default:
+		Assert(false);
+		return false;
+	}
 }
 
 void CResourceGathererRules::AddResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iAmt)

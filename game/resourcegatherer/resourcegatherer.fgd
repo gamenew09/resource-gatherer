@@ -1,5 +1,25 @@
 @include "hl2mp.fgd"
 
+@PointClass base(Targetname) = rg_resource_taker : "An entity that allows for taking resources. This entity should be used for shops"
+[
+	bio_cost(integer) : "Biological Resource Cost" : 0 : "How many biological resources should be taken."
+	mech_cost(integer) : "Mechanical Resource Cost" : 0 : "How many mechanical resources should be taken."
+	energy_cost(integer) : "Energy Resource Cost" : 0 : "How many energy resources should be taken."
+
+	one_time(choices) : "One Time" : 1 : "Should this resource taker only work once?" = 
+	[
+		"0": "No"
+		"1": "Yes"
+	]
+
+	input TakeResources(void) : "Takes the resources from the resource pool."
+	input ResetActivationState(void) : "If the resource taker has already been activated, it will allow the resource taker to be activated again."
+
+	output OnResourcesTaken(void) : "Called when resources have been successfully taken."
+	output OnResourcesTakenFailed(void) : "Called when resources have not been taken."
+	output OnAttemptTakeButAlreadyTaken(void) : "Called when resources have not been taken because the resource taker can only take resources once, unless reset by ResetActivationState."
+]
+
 @NPCClass base(BaseCombine) studio("models/Combine_Soldier.mdl") = npc_combine_s : "Combine Soldier"
 [
 	input Assault(string) : "Start an assault. Parameter passed in should be the name of the rally point."
@@ -24,3 +44,4 @@
 		"2" : "Yes"
 	]
 ]
+

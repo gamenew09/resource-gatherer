@@ -254,6 +254,8 @@ $Project "Server (Resource Gatherer)"
 			{
 				$File "resourcegatherer\rg_resourcepickup.h"
 				$File "resourcegatherer\rg_resourcepickup.cpp"
+
+				$File "resourcegatherer\rg_resource_taker.cpp"
 			}
 
 			$Folder "Weapons"
