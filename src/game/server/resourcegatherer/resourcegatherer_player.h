@@ -124,10 +124,10 @@ public:
 	CNetworkHandle( CBaseEntity, m_hRagdoll );	// networked entity handle 
 
 	virtual bool	CanHearAndReadChatFrom( CBasePlayer *pPlayer );
-
 		
-private:
 
+private:
+	
 	CNetworkQAngle( m_angEyeAngles );
 	CPlayerAnimState   m_PlayerAnimState;
 

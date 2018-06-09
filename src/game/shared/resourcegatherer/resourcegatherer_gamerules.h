@@ -133,10 +133,13 @@ public:
 
 	virtual void InitDefaultAIRelationships() OVERRIDE;
 
-	//virtual void PlayerSpawn(CBasePlayer *pPlayer);
-	//virtual void PlayerThink(CBasePlayer *pPlayer);
-	//virtual bool FPlayerCanRespawn(CBasePlayer *pPlayer);
-	//virtual float FlPlayerSpawnTime(CBasePlayer *pPlayer);
+	virtual bool AllowDamage(CBaseEntity *pVictim, const CTakeDamageInfo &info);
+	virtual bool FPlayerCanTakeDamage(CBasePlayer *pPlayer, CBaseEntity *pAttacker, const CTakeDamageInfo &info);
+
+	virtual void PlayerSpawn(CBasePlayer *pPlayer);
+	virtual void PlayerThink(CBasePlayer *pPlayer);
+	virtual bool FPlayerCanRespawn(CBasePlayer *pPlayer);
+	virtual float FlPlayerSpawnTime(CBasePlayer *pPlayer);
 #endif
 
     virtual const ResourceGathererViewVectors* GetRGViewVectors() const;

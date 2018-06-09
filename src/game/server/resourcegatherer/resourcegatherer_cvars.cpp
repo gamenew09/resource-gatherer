@@ -27,3 +27,9 @@ ConVar sk_resource_drop_per_damage_combine_soldier(
 	"4",
 	FCVAR_GAMEDLL | FCVAR_NOTIFY,
 	"A skill variable that determines how many bio resources will be dropped per damage for a Combine Soldier.");
+
+ConVar rg_restartmap(
+	"rg_restartmap",
+	"1",
+	FCVAR_GAMEDLL | FCVAR_NOTIFY,
+	"If non-zero, the game will restart the map instead of changing maps once the game is over.");

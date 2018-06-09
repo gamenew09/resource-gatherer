@@ -15,6 +15,7 @@
 #include <vgui/ILocalize.h>
 #include <KeyValues.h>
 #include "c_baseplayer.h"
+#include "c_ai_basenpc.h"
 #include "c_team.h"
 
 
@@ -58,6 +59,7 @@ public:
 	virtual void ApplySchemeSettings( vgui::IScheme *scheme );
 
 	void SetColorForNoticePlayer( int iTeamNumber );
+	void SetColorForNoticeNPC();
 	void RetireExpiredDeathNotices( void );
 	
 	virtual void FireGameEvent( IGameEvent * event );
@@ -141,6 +143,13 @@ void CHudDeathNotice::SetColorForNoticePlayer( int iTeamNumber )
 	surface()->DrawSetTextColor( GameResources()->GetTeamColor( iTeamNumber ) );
 }
 
+static Color g_DeathNoticeNPCColor(255, 0, 0, 255);
+
+void CHudDeathNotice::SetColorForNoticeNPC()
+{
+	surface()->DrawSetTextColor(g_DeathNoticeNPCColor);
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
@@ -222,7 +231,14 @@ void CHudDeathNotice::Paint()
 				x -= UTIL_ComputeStringWidth( m_hTextFont, killer );
 			}
 
-			SetColorForNoticePlayer( iKillerTeam );
+			if (m_DeathNotices[i].Killer.isNPC)
+			{
+				SetColorForNoticeNPC();
+			}
+			else
+			{
+				SetColorForNoticePlayer(iKillerTeam);
+			}
 
 			// Draw killer's name
 			surface()->DrawSetTextPos( x, y );
@@ -238,7 +254,14 @@ void CHudDeathNotice::Paint()
 		icon->DrawSelf( x, y, iconWide, iconTall, iconColor );
 		x += iconWide;		
 
-		SetColorForNoticePlayer( iVictimTeam );
+		if (m_DeathNotices[i].Victim.isNPC)
+		{
+			SetColorForNoticeNPC();
+		}
+		else
+		{
+			SetColorForNoticePlayer(iVictimTeam);
+		}
 
 		// Draw victims name
 		surface()->DrawSetTextPos( x, y );
@@ -317,7 +340,8 @@ void CHudDeathNotice::FireGameEvent( IGameEvent * event )
 	}
 	else
 	{
-		killer_name = ClientEntityList().GetBaseEntity(killer)->GetClassname();
+		C_BaseEntity* pEntity = ClientEntityList().GetBaseEntity(killer);
+		killer_name = pEntity->GetDebugName();
 	}
 	const char *victim_name = g_PR->GetPlayerName( victim );
 

@@ -141,6 +141,21 @@ void CResourceGathererRules::Think( void )
 {
 #ifndef CLIENT_DLL
 	CGameRules::Think();
+
+	if ((gpGlobals->curtime >= m_flIntermissionEndTime && g_fGameOver) || mp_restartgame_immediate.GetBool())
+	{
+		mp_restartgame_immediate.SetValue(0);
+		mp_restartgame.SetValue(0);
+		if (rg_restartmap.GetBool())
+		{
+			ChangeLevelToMap(STRING(gpGlobals->mapname));
+		}
+		else
+		{
+			ChangeLevel();
+		}
+		return;
+	}
 #endif
 }
 
@@ -268,6 +283,35 @@ void CResourceGathererRules::DeathNotice( CBasePlayer *pVictim, const CTakeDamag
 			gameeventmanager->FireEvent(event);
 		}
 	}
+
+	if (pVictim->IsPlayer())
+	{
+		bool bShouldStartIntermission = true;
+
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
+			CBasePlayer* pBasePly = UTIL_PlayerByIndex(i);
+			CResourceGatherer_Player* pPlayer = dynamic_cast<CResourceGatherer_Player*>(pBasePly);
+
+			if (pBasePly && pPlayer && pPlayer != pVictim)
+			{
+				if (pPlayer && pPlayer->IsAlive())
+				{
+					bShouldStartIntermission = false;
+					break;
+				}
+				else
+				{
+					bShouldStartIntermission = true;
+				}
+			}
+		}
+
+		if (bShouldStartIntermission)
+		{
+			GoToIntermission();
+		}
+	}
 #endif
 
 }
@@ -389,18 +433,18 @@ const char *CResourceGathererRules::GetChatFormat( bool bTeamOnly, CBasePlayer *
 	{
 		if ( pPlayer->GetTeamNumber() == TEAM_SPECTATOR )
 		{
-			pszFormat = "HL2MP_Chat_Spec";
+			pszFormat = "ResourceGatherer_Chat_Spec";
 		}
 		else
 		{
 			const char *chatLocation = GetChatLocation( bTeamOnly, pPlayer );
 			if ( chatLocation && *chatLocation )
 			{
-				pszFormat = "HL2MP_Chat_Team_Loc";
+				pszFormat = "ResourceGatherer_Chat_Team_Loc";
 			}
 			else
 			{
-				pszFormat = "HL2MP_Chat_Team";
+				pszFormat = "ResourceGatherer_Chat_Team";
 			}
 		}
 	}
@@ -409,11 +453,11 @@ const char *CResourceGathererRules::GetChatFormat( bool bTeamOnly, CBasePlayer *
 	{
 		if ( pPlayer->GetTeamNumber() != TEAM_SPECTATOR )
 		{
-			pszFormat = "HL2MP_Chat_All";	
+			pszFormat = "ResourceGatherer_Chat_All";	
 		}
 		else
 		{
-			pszFormat = "HL2MP_Chat_AllSpec";
+			pszFormat = "ResourceGatherer_Chat_AllSpec";
 		}
 	}
 
@@ -1378,6 +1422,47 @@ void CResourceGathererRules::InitDefaultAIRelationships()
 	CBaseCombatCharacter::SetDefaultRelationship(CLASS_HACKED_ROLLERMINE, CLASS_HACKED_ROLLERMINE, D_LI, 0);
 }
 
+//=========================================================
+//=========================================================
+bool CResourceGathererRules::AllowDamage(CBaseEntity *pVictim, const CTakeDamageInfo &info)
+{
+	return true;
+}
+
+//=========================================================
+//=========================================================
+bool CResourceGathererRules::FPlayerCanTakeDamage(CBasePlayer *pPlayer, CBaseEntity *pAttacker, const CTakeDamageInfo &info)
+{
+	return true;
+}
+
+//=========================================================
+//=========================================================
+void CResourceGathererRules::PlayerThink(CBasePlayer *pPlayer)
+{
+	BaseClass::PlayerThink(pPlayer);
+}
+
+//=========================================================
+//=========================================================
+void CResourceGathererRules::PlayerSpawn(CBasePlayer *pPlayer)
+{
+	BaseClass::PlayerSpawn(pPlayer);
+}
+
+//=========================================================
+//=========================================================
+bool CResourceGathererRules::FPlayerCanRespawn(CBasePlayer *pPlayer)
+{
+	return false;
+}
+
+//=========================================================
+//=========================================================
+float CResourceGathererRules::FlPlayerSpawnTime(CBasePlayer *pPlayer)
+{
+	return gpGlobals->curtime;//now!
+}
 #endif
 
 // shared ammo definition
