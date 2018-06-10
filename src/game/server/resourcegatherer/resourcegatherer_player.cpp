@@ -826,10 +826,28 @@ void CResourceGatherer_Player::CheatImpulseCommands( int iImpulse )
 				if( sv_cheats->GetBool() )
 				{
 					GiveAllItems();
+
+					Assert(ResourceGathererRules());
+
+					ResourceGathererRules()->AddResource(this, ResourceType_Biological, 500);
+					ResourceGathererRules()->AddResource(this, ResourceType_Mechanical, 500);
+					ResourceGathererRules()->AddResource(this, ResourceType_Energy, 500);
 				}
 			}
 			break;
 
+		case 109:
+			{
+				if (sv_cheats->GetBool())
+				{
+					Assert(ResourceGathererRules());
+
+					ResourceGathererRules()->AddResource(this, ResourceType_Biological, 500);
+					ResourceGathererRules()->AddResource(this, ResourceType_Mechanical, 500);
+					ResourceGathererRules()->AddResource(this, ResourceType_Energy, 500);
+				}
+			}
+			break;
 		default:
 			BaseClass::CheatImpulseCommands( iImpulse );
 	}

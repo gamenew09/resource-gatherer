@@ -140,6 +140,9 @@ public:
 	virtual void PlayerThink(CBasePlayer *pPlayer);
 	virtual bool FPlayerCanRespawn(CBasePlayer *pPlayer);
 	virtual float FlPlayerSpawnTime(CBasePlayer *pPlayer);
+
+	virtual int ItemShouldRespawn(CItem *pItem);
+	virtual int WeaponShouldRespawn(CBaseCombatWeapon *pWeapon);
 #endif
 
     virtual const ResourceGathererViewVectors* GetRGViewVectors() const;

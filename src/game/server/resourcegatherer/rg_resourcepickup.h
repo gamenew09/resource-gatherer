@@ -7,7 +7,7 @@ class CResourceGathererResourcePickup : public CBaseAnimating
     DECLARE_CLASS( CResourceGathererResourcePickup, CBaseAnimating );
 	DECLARE_SERVERCLASS();
 
-	//DECLARE_DATADESC();
+	DECLARE_DATADESC();
 public:
 	CResourceGathererResourcePickup();
  
@@ -25,6 +25,8 @@ public:
 	
     CNetworkVar(EResourceType, m_eResourceType);
     CNetworkVar(int, m_iWorth);
+
+	COutputEvent m_OnPickedUp;
 private:
 	bool m_bHasBeenPickedUp;
 };

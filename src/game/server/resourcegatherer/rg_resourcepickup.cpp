@@ -14,16 +14,16 @@ IMPLEMENT_SERVERCLASS_ST(CResourceGathererResourcePickup, DT_ResourceGathererRes
 	SendPropInt(SENDINFO(m_iWorth)),
 END_SEND_TABLE()
 
-/*
 // Start of our data description for the class
 BEGIN_DATADESC( CResourceGathererResourcePickup )
  
 	// Save/restore our active state
-	DEFINE_FIELD( m_eResourceType, FIELD_INTEGER ),
-	DEFINE_FIELD( m_iWorth, FIELD_INTEGER ),
- 
+	DEFINE_KEYFIELD( m_eResourceType, FIELD_INTEGER, "resource_type" ),
+	DEFINE_KEYFIELD( m_iWorth, FIELD_INTEGER, "worth" ),
+
+	DEFINE_OUTPUT( m_OnPickedUp, "OnPickedUp" ),
+
 END_DATADESC()
-*/
 
 CResourceGathererResourcePickup::CResourceGathererResourcePickup()
 {
@@ -64,6 +64,7 @@ void CResourceGathererResourcePickup::PickupResource(CBasePlayer* pCauser)
 
 		ResourceGathererRules()->AddResource(pCauser, m_eResourceType, m_iWorth);
 		m_bHasBeenPickedUp = true;
+		m_OnPickedUp.FireOutput(pCauser, this);
 		UTIL_Remove(this); // Make sure that the resource is removed since it has been picked up.
     }
 }

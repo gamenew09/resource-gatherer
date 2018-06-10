@@ -40,9 +40,9 @@ BEGIN_NETWORK_TABLE_NOBASE( CResourceGathererRules, DT_ResourceGathererRules )
     RecvPropInt( RECVINFO(m_iMechanical) ),
     RecvPropInt( RECVINFO(m_iEnergy) ),
 #else
-    SendPropInt( SENDINFO(m_iBiological), 8, SPROP_CHANGES_OFTEN ),
-    SendPropInt( SENDINFO(m_iMechanical), 8, SPROP_CHANGES_OFTEN ),
-    SendPropInt( SENDINFO(m_iEnergy), 8, SPROP_CHANGES_OFTEN ),
+    SendPropInt( SENDINFO(m_iBiological) ),
+    SendPropInt( SENDINFO(m_iMechanical) ),
+    SendPropInt( SENDINFO(m_iEnergy) ),
 #endif
 
 END_NETWORK_TABLE()
@@ -403,6 +403,17 @@ bool CResourceGathererRules::CanBuyItem(CBasePlayer* pPlayer, EResourceType eRes
 }
 
 #ifndef CLIENT_DLL
+
+int CResourceGathererRules::ItemShouldRespawn(CItem *pItem)
+{
+	return GR_ITEM_RESPAWN_NO;
+}
+
+int CResourceGathererRules::WeaponShouldRespawn(CBaseCombatWeapon *pWeapon)
+{
+	return GR_WEAPON_RESPAWN_NO;
+}
+
 CResourceGathererResourcePickup* CResourceGathererRules::CreateResourcePickup(EResourceType eResourceType, int iWorth)
 {
 	CResourceGathererResourcePickup *pEnt = dynamic_cast<CResourceGathererResourcePickup*>(CreateEntityByName("rg_resourcepickup"));

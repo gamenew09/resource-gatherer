@@ -20,6 +20,19 @@
 	output OnAttemptTakeButAlreadyTaken(void) : "Called when resources have not been taken because the resource taker can only take resources once, unless reset by ResetActivationState."
 ]
 
+@PointClass base(Targetname) = rg_resourcepickup : "An entity that gives some resource of a type"
+[
+	resource_type(choices) : "Resource Type" : 1 : "What resource will be given when picked up." =
+	[
+		"1": "Biological"
+		"2": "Mechanical"
+		"3": "Energy"
+	]
+	worth(integer) : "Worth" : 1 : "How much resources will be given when picked up."
+
+	output OnPickedUp(void) : "Called when this resource pickup has been picked up."
+]
+
 @NPCClass base(BaseCombine) studio("models/Combine_Soldier.mdl") = npc_combine_s : "Combine Soldier"
 [
 	input Assault(string) : "Start an assault. Parameter passed in should be the name of the rally point."
