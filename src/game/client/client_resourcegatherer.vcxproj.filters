@@ -25,6 +25,12 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{BA03E055-4FA2-FCE3-8A1C-D348547D379C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game Instructor">
+      <UniqueIdentifier>{8DE0687C-7040-0EC4-A910-2ADC94063C89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Instructor\Hud Elements">
+      <UniqueIdentifier>{37864545-743C-7814-B50E-137764D1B081}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\game_controls">
       <UniqueIdentifier>{1E7DB91A-DC0A-B17F-617D-4C4FB3FA7A3E}</UniqueIdentifier>
     </Filter>
@@ -1832,6 +1838,15 @@
     <ClInclude Include="viewpostprocess.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="instructor\c_baselesson.h">
+      <Filter>Source Files\Game Instructor</Filter>
+    </ClInclude>
+    <ClInclude Include="instructor\c_gameinstructor.h">
+      <Filter>Source Files\Game Instructor</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcegatherer\hud\hud_locator_target.h">
+      <Filter>Source Files\Game Instructor\Hud Elements</Filter>
+    </ClInclude>
     <ClInclude Include="game_controls\basemodel_panel.h">
       <Filter>Source Files\game_controls</Filter>
     </ClInclude>
@@ -2964,6 +2979,15 @@
     </ClCompile>
     <ClCompile Include="WorldDimsProxy.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="instructor\c_baselesson.cpp">
+      <Filter>Source Files\Game Instructor</Filter>
+    </ClCompile>
+    <ClCompile Include="instructor\c_gameinstructor.cpp">
+      <Filter>Source Files\Game Instructor</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcegatherer\hud\hud_locator_target.cpp">
+      <Filter>Source Files\Game Instructor\Hud Elements</Filter>
     </ClCompile>
     <ClCompile Include="game_controls\basemodel_panel.cpp">
       <Filter>Source Files\game_controls</Filter>

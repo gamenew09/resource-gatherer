@@ -62,4 +62,10 @@
 		"resource_type"	"short" // Maps to the EResourceType enum.
 		"amount"	"int"
 	}
+
+	// Instructor Events
+	"instructor_primaryattack"
+	{
+		"userid"	"short"
+	}
 }

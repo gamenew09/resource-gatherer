@@ -811,6 +811,19 @@ bool CResourceGatherer_Player::BumpWeapon( CBaseCombatWeapon *pWeapon )
 	return true;
 }
 
+void CResourceGatherer_Player::Weapon_Equip(CBaseCombatWeapon *pWeapon)
+{
+	BaseClass::Weapon_Equip(pWeapon);
+
+	IGameEvent *pEvent = gameeventmanager->CreateEvent("instructor_primaryattack");
+
+	if (pEvent)
+	{
+		pEvent->SetInt("userid", GetUserID());
+		gameeventmanager->FireEvent(pEvent);
+	}
+}
+
 void CResourceGatherer_Player::ChangeTeam( int iTeam )
 {
 /*	if ( GetNextTeamChangeTime() >= gpGlobals->curtime )

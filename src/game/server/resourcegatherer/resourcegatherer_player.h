@@ -43,6 +43,8 @@ public:
 	DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();
 
+	virtual void Weapon_Equip(CBaseCombatWeapon *pWeapon);
+
 	virtual void Precache( void );
 	virtual void Spawn( void );
 	virtual void PostThink( void );

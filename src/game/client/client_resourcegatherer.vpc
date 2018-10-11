@@ -107,6 +107,21 @@ $Project "Client (Resource Gatherer)"
 			$File	"hl2\vgui_rootpanel_hl2.cpp"
 		}
 
+		$Folder "Game Instructor"
+		{
+			$Folder "Hud Elements"
+			{
+				$File	"resourcegatherer\hud\hud_locator_target.h"
+				$File	"resourcegatherer\hud\hud_locator_target.cpp"
+			}
+
+			$File	"instructor\c_baselesson.h"
+			$File	"instructor\c_baselesson.cpp"
+
+			$File	"instructor\c_gameinstructor.h"
+			$File	"instructor\c_gameinstructor.cpp"
+		}
+
 		$Folder "Resource Gatherer"
 		{
 			$File	"$SRCDIR\game\shared\resourcegatherer\resourcegatherer_gamerules.cpp"
