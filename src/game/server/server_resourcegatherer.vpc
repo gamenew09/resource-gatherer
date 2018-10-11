@@ -250,6 +250,13 @@ $Project "Server (Resource Gatherer)"
 
 			$File	"resourcegatherer\resourcegatherer_client.cpp"
 
+			$File	"resourcegatherer\resourcegatherer_bot_temp.cpp"
+
+			$Folder "Achievements"
+			{
+				$File	"$SRCDIR\game\shared\resourcegatherer\achievements_resourcegatherer.cpp"
+			}
+
 			$Folder "Entities"
 			{
 				$File "resourcegatherer\rg_resourcepickup.h"

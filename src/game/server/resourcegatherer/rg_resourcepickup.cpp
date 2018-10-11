@@ -36,8 +36,6 @@ CResourceGathererResourcePickup::CResourceGathererResourcePickup()
 #define MECHANICAL_DROP_MODEL "models/gibs/manhack_gib01.mdl"
 #define BIOLOGICAL_DROP_MODEL "models/weapons/w_bugbait.mdl"
 
-// RGTODO: Convert Pickup Sounds to sound entries. "ResourcePickup.Energy" for instance.
-
 #define ENERGY_PICKUP_SOUND "Resource.Pickup.Energy"
 #define MECHANICAL_PICKUP_SOUND "Resource.Pickup.Mechanical"
 #define BIOLOGICAL_PICKUP_SOUND "Resource.Pickup.Biological"

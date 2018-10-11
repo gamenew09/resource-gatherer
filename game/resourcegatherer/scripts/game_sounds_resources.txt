@@ -12,7 +12,7 @@
     "volume"    "VOL_NORM"
     "pitch"     "PITCH_NORM"
     "soundlevel"    "SNDLVL_NORM"
-    "wave"      "npc/ministrider/flechette_flesh_impact1.wav"
+    "wave"      "resource/mechanical_collect.wav"
 }
 "Resource.Pickup.Biological"
 {
@@ -20,5 +20,5 @@
     "volume"    "VOL_NORM"
     "pitch"     "PITCH_NORM"
     "soundlevel"    "SNDLVL_NORM"
-    "wave"      "weapons/bugbait/bugbait_impact1.wav"
+    "wave"      "resource/biological_collect.wav"
 }

@@ -32,7 +32,7 @@
 		"fieldName" "ResourceCounter"
 	    "visible" "0"
 	    "enabled" "1"
-		"xpos"	"16"
+		"xpos"	"r75"
 		"ypos"	"275"
 	    "wide" "200"
 	    "tall" "60"

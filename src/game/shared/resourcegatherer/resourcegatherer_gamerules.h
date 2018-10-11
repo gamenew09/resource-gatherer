@@ -123,7 +123,9 @@ public:
 
     virtual bool CanBuyItem(CBasePlayer* pPlayer, EResourceType eResourceType, int32 iPrice); // Should we use item instead?
 #ifndef CLIENT_DLL
-    virtual bool TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice);
+	// Takes resources away from a player
+	// If bAlwaysRemoveToZero is true, then even if the iPrice is more than the resource count, it will subtract to zero.
+    virtual bool TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice, bool bAlwaysRemoveToZero = false);
 
 	virtual void AddResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iAmt);
 

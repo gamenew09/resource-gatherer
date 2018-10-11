@@ -33,6 +33,8 @@ CBaseEntity	 *g_pLastCombineSpawn = NULL;
 CBaseEntity	 *g_pLastRebelSpawn = NULL;
 extern CBaseEntity				*g_pLastSpawn;
 
+extern void respawn(CBaseEntity *pEdict, bool fCopyCorpse);
+
 #define HL2MP_COMMAND_MAX_RATE 0.3
 
 void DropPrimedFragGrenade( CResourceGatherer_Player *pPlayer, CBaseCombatWeapon *pGrenade );
@@ -402,7 +404,107 @@ void CResourceGatherer_Player::PlayerDeathThink()
 {
 	if( !IsObserver() )
 	{
-		BaseClass::PlayerDeathThink();
+		float flForward;
+
+		SetNextThink(gpGlobals->curtime + 0.1f);
+
+		if (GetFlags() & FL_ONGROUND)
+		{
+			flForward = GetAbsVelocity().Length() - 20;
+			if (flForward <= 0)
+			{
+				SetAbsVelocity(vec3_origin);
+			}
+			else
+			{
+				Vector vecNewVelocity = GetAbsVelocity();
+				VectorNormalize(vecNewVelocity);
+				vecNewVelocity *= flForward;
+				SetAbsVelocity(vecNewVelocity);
+			}
+		}
+
+		if (HasWeapons())
+		{
+			// we drop the guns here because weapons that have an area effect and can kill their user
+			// will sometimes crash coming back from CBasePlayer::Killed() if they kill their owner because the
+			// player class sometimes is freed. It's safer to manipulate the weapons once we know
+			// we aren't calling into any of their code anymore through the player pointer.
+			PackDeadPlayerItems();
+		}
+
+		if (GetModelIndex() && (!IsSequenceFinished()) && (m_lifeState == LIFE_DYING))
+		{
+			StudioFrameAdvance();
+
+			m_iRespawnFrames++;
+			if (m_iRespawnFrames < 60)  // animations should be no longer than this
+				return;
+		}
+
+		if (m_lifeState == LIFE_DYING)
+		{
+			m_lifeState = LIFE_DEAD;
+			m_flDeathAnimTime = gpGlobals->curtime;
+		}
+
+		StopAnimation();
+
+		IncrementInterpolationFrame();
+		m_flPlaybackRate = 0.0;
+
+		int fAnyButtonDown = (m_nButtons & ~IN_SCORE);
+
+		// Strip out the duck key from this check if it's toggled
+		if ((fAnyButtonDown & IN_DUCK) && GetToggledDuckState())
+		{
+			fAnyButtonDown &= ~IN_DUCK;
+		}
+
+		// wait for all buttons released
+		if (m_lifeState == LIFE_DEAD)
+		{
+			if (fAnyButtonDown)
+				return;
+
+			if (g_pGameRules->FPlayerCanRespawn(this))
+			{
+				m_lifeState = LIFE_RESPAWNABLE;
+			}
+			else
+			{
+				// Since we cannot respawn yet, have the player go into a spectator cam to wait for a time to respawn.
+				if (g_pGameRules->IsMultiplayer() && (gpGlobals->curtime > (m_flDeathTime + DEATH_ANIMATION_TIME)) && !IsObserver()) // If the player is not spectating yet, then make them spectate
+				{
+					m_bEnterObserver = true;
+					StartObserverMode(m_iObserverLastMode);
+				}
+			}
+
+			return;
+		}
+
+		// if the player has been dead for one second longer than allowed by forcerespawn, 
+		// forcerespawn isn't on. Send the player off to an intermission camera until they 
+		// choose to respawn.
+		if (g_pGameRules->IsMultiplayer() && (gpGlobals->curtime > (m_flDeathTime + DEATH_ANIMATION_TIME)) && !IsObserver())
+		{
+			// go to dead camera. 
+			StartObserverMode(m_iObserverLastMode);
+		}
+
+		// wait for any button down,  or mp_forcerespawn is set and the respawn time is up
+		if (!fAnyButtonDown
+			&& !(g_pGameRules->IsMultiplayer() && forcerespawn.GetInt() > 0 && (gpGlobals->curtime > (m_flDeathTime + 5))))
+			return;
+
+		m_nButtons = 0;
+		m_iRespawnFrames = 0;
+
+		//Msg( "Respawn\n");
+
+		respawn(this, !IsObserver());// don't copy a corpse if we're in deathcam.
+		SetNextThink(TICK_NEVER_THINK);
 	}
 }
 

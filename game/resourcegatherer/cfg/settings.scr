@@ -83,13 +83,6 @@ DESCRIPTION SERVER_OPTIONS
 		{ "0.000000" }
 	}
 
-	"mp_teamplay"
-	{
-		"#Valve_Teamplay"
-		{ BOOL }
-		{ "0" }
-	}
-
 	"mp_weaponstay"
 	{
 		"#Valve_Weapons_Stay"

@@ -849,6 +849,33 @@ CHLClient::CHLClient()
 
 extern IGameSystem *ViewportClientSystem();
 
+static void MountAdditionalContent()
+{
+	KeyValues *pMainFile = new KeyValues("gameinfo.txt");
+#ifndef _WINDOWS
+	// case sensitivity
+	pMainFile->LoadFromFile(filesystem, "GameInfo.txt", "MOD");
+	if (!pMainFile)
+#endif
+		pMainFile->LoadFromFile(filesystem, "gameinfo.txt", "MOD");
+
+	if (pMainFile)
+	{
+		KeyValues* pFileSystemInfo = pMainFile->FindKey("FileSystem");
+		if (pFileSystemInfo)
+			for (KeyValues *pKey = pFileSystemInfo->GetFirstSubKey(); pKey; pKey = pKey->GetNextKey())
+			{
+				if (strcmp(pKey->GetName(), "AdditionalContentId") == 0)
+				{
+					int appid = abs(pKey->GetInt());
+					if (appid)
+						if (filesystem->MountSteamContent(-appid) != FILESYSTEM_MOUNT_OK)
+							Warning("Unable to mount extra content with appId: %i\n", appid);
+				}
+			}
+	}
+	pMainFile->deleteThis();
+}
 
 //-----------------------------------------------------------------------------
 ISourceVirtualReality *g_pSourceVR = NULL;
@@ -950,6 +977,9 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
 		return false;
 	InitFbx();
 #endif
+
+	// Load additional content via Steam App IDs.
+	MountAdditionalContent();
 
 	// it's ok if this is NULL. That just means the sourcevr.dll wasn't found
 	g_pSourceVR = (ISourceVirtualReality *)appSystemFactory(SOURCE_VIRTUAL_REALITY_INTERFACE_VERSION, NULL);

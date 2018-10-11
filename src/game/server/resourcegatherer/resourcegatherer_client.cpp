@@ -175,6 +175,11 @@ void GameStartFrame( void )
 	VPROF("GameStartFrame()");
 	if ( g_fGameOver )
 		return;
+
+#if defined(DEBUG) || defined(BOTTEST_IN_RELEASE)
+	extern void Bot_RunAll();
+	Bot_RunAll();
+#endif
 }
 
 //=========================================================

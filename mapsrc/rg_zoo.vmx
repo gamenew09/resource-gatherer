@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "7538"
-	"mapversion" "92"
+	"mapversion" "93"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -14,13 +14,13 @@ viewsettings
 	"bSnapToGrid" "1"
 	"bShowGrid" "1"
 	"bShowLogicalGrid" "0"
-	"nGridSpacing" "2"
+	"nGridSpacing" "1"
 	"bShow3DGrid" "0"
 }
 world
 {
 	"id" "1"
-	"mapversion" "92"
+	"mapversion" "93"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5550,7 +5550,7 @@ entity
 	"angles" "0 270 0"
 	"fademindist" "-1"
 	"fadescale" "1"
-	"origin" "-944.255 24 30"
+	"origin" "-944 24 30"
 	editor
 	{
 		"color" "0 0 200"
@@ -5566,7 +5566,7 @@ entity
 	"angles" "0 270 0"
 	"fademindist" "-1"
 	"fadescale" "1"
-	"origin" "-948 24 30"
+	"origin" "-950 24 30"
 	editor
 	{
 		"color" "0 0 200"
@@ -5582,7 +5582,7 @@ entity
 	"angles" "0 270 0"
 	"fademindist" "-1"
 	"fadescale" "1"
-	"origin" "-946 24 30"
+	"origin" "-947 24 30"
 	editor
 	{
 		"color" "0 0 200"
@@ -5598,7 +5598,7 @@ entity
 	"angles" "0 270 0"
 	"fademindist" "-1"
 	"fadescale" "1"
-	"origin" "-942 24 30"
+	"origin" "-941 24 30"
 	editor
 	{
 		"color" "0 0 200"

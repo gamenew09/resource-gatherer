@@ -31,6 +31,9 @@
 #include "rg_resourcepickup.h"
 #endif
 
+//ConVar mp_friendlyfire("mp_friendlyfire", "0", FCVAR_REPLICATED | FCVAR_NOTIFY, "");
+extern ConVar friendlyfire;
+
 REGISTER_GAMERULES_CLASS( CResourceGathererRules );
 
 BEGIN_NETWORK_TABLE_NOBASE( CResourceGathererRules, DT_ResourceGathererRules )
@@ -116,7 +119,11 @@ CResourceGathererRules::CResourceGathererRules()
 	CTeam* pUnassignedTeam = static_cast<CTeam*>(CreateEntityByName("team_manager"));
 	pUnassignedTeam->Init("Unassigned", TEAM_UNASSIGNED);
 
+	CTeam* pSpectatorTeam = static_cast<CTeam*>(CreateEntityByName("team_manager"));
+	pSpectatorTeam->Init("Spectator", TEAM_SPECTATOR);
+
 	g_Teams.AddToTail(pUnassignedTeam);
+	g_Teams.AddToTail(pSpectatorTeam);
 #endif
 }
 
@@ -257,8 +264,6 @@ void CResourceGathererRules::DeathNotice( CBasePlayer *pVictim, const CTakeDamag
 			{
 				killer_weapon_name = "slam";
 			}
-
-
 		}
 
 		IGameEvent *event = gameeventmanager->CreateEvent("player_death");
@@ -284,32 +289,32 @@ void CResourceGathererRules::DeathNotice( CBasePlayer *pVictim, const CTakeDamag
 		}
 	}
 
-	if (pVictim->IsPlayer())
+	if (pVictim->IsPlayer()) // Check to see if a player just died.
 	{
 		bool bShouldStartIntermission = true;
 
-		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		for (int i = 1; i <= gpGlobals->maxClients; i++) // Iterate through all players.
 		{
-			CBasePlayer* pBasePly = UTIL_PlayerByIndex(i);
-			CResourceGatherer_Player* pPlayer = dynamic_cast<CResourceGatherer_Player*>(pBasePly);
+			CBasePlayer* pBasePly = UTIL_PlayerByIndex(i); // Grab the player entity pointer.
+			CResourceGatherer_Player* pPlayer = dynamic_cast<CResourceGatherer_Player*>(pBasePly); // Cast to ResourceGatherer_Player
 
-			if (pBasePly && pPlayer && pPlayer != pVictim)
+			if (pBasePly && pPlayer && pPlayer != pVictim) // Check to see if the player we got is valid and the player does not equal to the victim we are currently acting upon.
 			{
-				if (pPlayer && pPlayer->IsAlive())
+				if (pPlayer->IsAlive()) // Check to see if the player is alive.
 				{
-					bShouldStartIntermission = false;
+					bShouldStartIntermission = false; // If the player is alive, then we know not to start the intermission.
 					break;
 				}
 				else
 				{
-					bShouldStartIntermission = true;
+					bShouldStartIntermission = true; // Otherwise, we should start the intermission. (? Why did i put this here)
 				}
 			}
 		}
 
-		if (bShouldStartIntermission)
+		if (bShouldStartIntermission) // If we should start the intermission.
 		{
-			GoToIntermission();
+			GoToIntermission(); // Then go to the intermission phase.
 		}
 	}
 #endif
@@ -366,12 +371,15 @@ bool CResourceGathererRules::ClientCommand( CBaseEntity *pEdict, const CCommand 
 	if( BaseClass::ClientCommand( pEdict, args ) )
 		return true;
 
-	/*
-	CHL2MP_Player *pPlayer = (CHL2MP_Player *) pEdict;
+	CResourceGatherer_Player *pPlayer = (CResourceGatherer_Player *)pEdict;
 
-	if ( pPlayer->ClientCommand( args ) )
-		return true;
-	*/
+	ASSERT(pPlayer);
+
+	if(pPlayer)
+	{
+		if (pPlayer->ClientCommand(args))
+			return true;
+	}
 #endif
 
 	return false;
@@ -475,40 +483,37 @@ const char *CResourceGathererRules::GetChatFormat( bool bTeamOnly, CBasePlayer *
 	return pszFormat;
 }
 
-bool CResourceGathererRules::TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice)
+bool CResourceGathererRules::TakeResource(CBasePlayer* pCauser, EResourceType eResourceType, int32 iPrice, bool bAlwaysRemoveToZero)
 {
 	switch (eResourceType)
 	{
 	case ResourceType_Biological:
-		if (m_iBiological < iPrice)
+		if (m_iBiological < iPrice && !bAlwaysRemoveToZero)
 		{
 			return false;
 		}
 
-		m_iBiological -= iPrice;
+		m_iBiological = max(m_iBiological - iPrice, 0);
 
 		return true;
-		break;
 	case ResourceType_Mechanical:
-		if (m_iMechanical < iPrice)
+		if (m_iMechanical < iPrice && !bAlwaysRemoveToZero)
 		{
 			return false;
 		}
 
-		m_iMechanical -= iPrice;
+		m_iMechanical = max(m_iMechanical - iPrice, 0);
 
 		return true;
-		break;
 	case ResourceType_Energy:
-		if (m_iEnergy < iPrice)
+		if (m_iEnergy < iPrice && !bAlwaysRemoveToZero)
 		{
 			return false;
 		}
 
-		m_iEnergy -= iPrice;
+		m_iEnergy = max(m_iEnergy - iPrice, 0);
 
 		return true;
-		break;
 	default:
 		Assert(false);
 		return false;
@@ -1479,6 +1484,11 @@ bool CResourceGathererRules::AllowDamage(CBaseEntity *pVictim, const CTakeDamage
 //=========================================================
 bool CResourceGathererRules::FPlayerCanTakeDamage(CBasePlayer *pPlayer, CBaseEntity *pAttacker, const CTakeDamageInfo &info)
 {
+	if (pAttacker && pAttacker->IsPlayer() && pPlayer != pAttacker && !friendlyfire.GetBool()) // If the attacker is valid, is a player, and isn't damaging themselves, then the victim player should not take damage. RGTODO: Add convar to disable player damage (mp_friendlyfire)
+	{
+		return false;
+	}
+
 	return true;
 }
 

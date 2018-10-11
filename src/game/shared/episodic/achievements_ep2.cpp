@@ -7,7 +7,7 @@
 
 #include "cbase.h"
 
-#ifdef GAME_DLL
+#if defined(GAME_DLL)
 
 #include "achievementmgr.h"
 #include "baseachievement.h"

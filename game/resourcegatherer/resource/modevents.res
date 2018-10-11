@@ -56,10 +56,10 @@
 		"achievement"	"short"		// achievement ID
 	}
 
-	"resource_added"
+	"resource_added" // Event is called when a resource of type Biological, Mechanical, or Energy gets added
 	{
-		"causer"	"short"
-		"resource_type"	"short"
+		"causer"	"short" // User Id of the player that caused resources being added
+		"resource_type"	"short" // Maps to the EResourceType enum.
 		"amount"	"int"
 	}
 }
