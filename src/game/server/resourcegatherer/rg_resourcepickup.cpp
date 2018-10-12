@@ -97,7 +97,7 @@ void CResourceGathererResourcePickup::PlayerCheckerThink()
 {
 	if (!m_bHasBeenPickedUp)
 	{
-#ifdef USE_MINS_MAX_FOR_RESOURCE_PICKUP
+#ifndef USE_RADIUS_CHECK_FOR_RESOURCE_PICKUP
 		Vector prop_mins, prop_maxs;
 		CollisionProp()->WorldSpaceSurroundingBounds(&prop_mins, &prop_maxs);
 #else
@@ -109,7 +109,7 @@ void CResourceGathererResourcePickup::PlayerCheckerThink()
 			CBasePlayer* pPlayer = UTIL_PlayerByIndex(i);
 			if (!pPlayer || !pPlayer->IsPlayer())
 				continue;
-#ifdef USE_MINS_MAX_FOR_RESOURCE_PICKUP
+#ifndef USE_RADIUS_CHECK_FOR_RESOURCE_PICKUP
 			Vector ply_mins, ply_maxs;
 
 			pPlayer->CollisionProp()->WorldSpaceSurroundingBounds(&ply_mins, &ply_maxs);
