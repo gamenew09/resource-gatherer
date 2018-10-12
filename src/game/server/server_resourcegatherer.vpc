@@ -252,6 +252,11 @@ $Project "Server (Resource Gatherer)"
 
 			$File	"resourcegatherer\resourcegatherer_bot_temp.cpp"
 
+			$Folder "Game Instructor"
+			{
+				$File	"instructor\env_instructor_hint.cpp"
+			}
+
 			$Folder "Achievements"
 			{
 				$File	"$SRCDIR\game\shared\resourcegatherer\achievements_resourcegatherer.cpp"

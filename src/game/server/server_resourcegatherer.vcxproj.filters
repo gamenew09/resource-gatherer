@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Resource Gatherer\Entities">
       <UniqueIdentifier>{9BC9560E-F58D-F01C-7858-866DF377AC92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Resource Gatherer\Game Instructor">
+      <UniqueIdentifier>{D8FADF23-3BA2-1EC4-5284-B68356829710}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Resource Gatherer\Weapons">
       <UniqueIdentifier>{98C58943-4549-FA62-9A96-C5FF38D89292}</UniqueIdentifier>
     </Filter>
@@ -3300,6 +3303,9 @@
     </ClCompile>
     <ClCompile Include="resourcegatherer\rg_resourcepickup.cpp">
       <Filter>Source Files\Resource Gatherer\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="instructor\env_instructor_hint.cpp">
+      <Filter>Source Files\Resource Gatherer\Game Instructor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\shared\resourcegatherer\weapons\weapon_357.cpp">
       <Filter>Source Files\Resource Gatherer\Weapons</Filter>
